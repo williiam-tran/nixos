@@ -14,6 +14,15 @@ let
   timeZone = "Asia/Ho_Chi_Minh";
 in
 {
+  nixpkgs.overlays = [
+    (final: _: {
+      # this allows you to access `pkgs.unstable` anywhere in your config
+      unstable = import inputs.nixpkgs-unstable {
+        inherit (final.stdenv.hostPlatform) system;
+        inherit (final) config;
+      };
+    })
+  ];
   imports = [
     ./hardware-configuration.nix
     ./user.nix
@@ -87,7 +96,8 @@ in
 
   i18n = {
     inputMethod = {
-      enabled = "fcitx5";
+      enable = true;
+      type = "fcitx5";
       fcitx5.addons = with pkgs; [
         fcitx5-gtk
         fcitx5-unikey
@@ -406,6 +416,12 @@ in
     Exec=Hyprland
     Type=Application
   '';
+  environment.etc."libinput/local-overrides.quirks".text = ''
+    [Serial Keyboards]
+    MatchUdevType=keyboard
+    MatchName=keyd virtual keyboard
+    AttrKeyboardIntegration=internal
+  '';
 
   fonts.packages = with pkgs; [
     noto-fonts-emoji
@@ -434,6 +450,23 @@ in
   };
 
   services = {
+    keyd = {
+      enable = true;
+      keyboards = {
+        default = {
+          ids = [ "*" ];
+          settings = {
+            main = {
+              capslock = "layer(control)";
+              leftcontrol = "super";
+              leftmeta = "control";
+              rightcontrol = "super";
+              rightmeta = "control";
+            };
+          };
+        };
+      };
+    };
     logrotate = {
       checkConfig = false;
     };
@@ -611,8 +644,6 @@ in
   programs._1password.enable = true;
   programs._1password-gui = {
     enable = true;
-    # Certain features, including CLI integration and system authentication support,
-    # require enabling PolKit integration on some desktop environments (e.g. Plasma).
     polkitPolicyOwners = [ "william" ];
   };
   xdg.mime.defaultApplications = {
@@ -675,5 +706,5 @@ in
     backupFileExtension = "backup";
   };
 
-  system.stateVersion = "24.05";
+  system.stateVersion = "24.11";
 }

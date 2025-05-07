@@ -55,6 +55,7 @@ bindkey '^w' backward-kill-word
 bindkey '^el' vi-forward-char
 bindkey '^[[A' history-search-backward
 bindkey '^[[B' history-search-forward
+bindkey '^P' fzf-completion
 
 # Aliases
 alias ..='cd ..' ...='cd ../..' .3='cd ../../..' .4='cd ../../../..' .5='cd ../../../../..'
