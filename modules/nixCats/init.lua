@@ -32,10 +32,10 @@ require 'vj.core'
 
 -- NOTE: nixCats: You might want to move the lazy-lock.json file
 local function getlockfilepath()
-  if require('nixCatsUtils').isNixCats and type(require('nixCats').settings.unwrappedCfgPath) == "string" then
-    return require('nixCats').settings.unwrappedCfgPath .. "/lazy-lock.json"
+  if require('nixCatsUtils').isNixCats and type(require('nixCats').settings.unwrappedCfgPath) == 'string' then
+    return require('nixCats').settings.unwrappedCfgPath .. '/lazy-lock.json'
   else
-    return vim.fn.stdpath("config") .. "/lazy-lock.json"
+    return vim.fn.stdpath 'config' .. '/lazy-lock.json'
   end
 end
 local lazyOptions = {
@@ -74,8 +74,7 @@ local lazyOptions = {
 -- NOTE: Here is where you install your plugins.
 -- NOTE: nixCats: this the lazy wrapper. Use it like require('lazy').setup() but with an extra
 -- argument, the path to lazy.nvim as downloaded by nix, or nil, before the normal arguments.
-require('nixCatsUtils.lazyCat').setup(nixCats.pawsible({"allPlugins", "start", "lazy.nvim" }),
-{
+require('nixCatsUtils.lazyCat').setup(nixCats.pawsible { 'allPlugins', 'start', 'lazy.nvim' }, {
 
   -- The following two comments only work if you have downloaded the kickstart repo, not just copy pasted the
   -- init.lua. If you want these files, they are in the repository, so you can just download them and

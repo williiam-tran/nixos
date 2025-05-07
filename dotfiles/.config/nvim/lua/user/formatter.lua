@@ -1,0 +1,18 @@
+require("conform").setup({
+	formatters_by_ft = {
+		lua = { "stylua" },
+		-- Conform will run multiple formatters sequentially
+		python = { "isort", "black" },
+		-- Use a sub-list to run only the first available formatter
+		javascript = { "prettier" },
+		typescript = { "prettier" },
+		-- css = { "prettier" },
+		json = { "prettier" },
+	},
+
+	format_on_save = {
+		-- These options will be passed to conform.format()
+		timeout_ms = 200,
+		lsp_fallback = true,
+	},
+})

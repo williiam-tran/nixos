@@ -1,27 +1,24 @@
-require 'vj.core'
-require 'vj.lazy'
+require("user.lazy")
+require("user.options")
+require("user.autocmds")
+require("user.keymaps")
 
---[[
-=====================================================================
-==================== Thank You TJ for Kickstart =====================
-=====================================================================
-========                                    .-----.          ========
-========         .----------------------.   | === |          ========
-========         |.-""""""""""""""""""-.|   |-----|          ========
-========         ||                    ||   | === |          ========
-========         ||    MYCONFIG.NVIM   ||   |-----|          ========
-========         ||                    ||   | === |          ========
-========         ||                    ||   |-----|          ========
-========         ||:VimBeGood          ||   |:::::|          ========
-========         |'-..................-'|   |____o|          ========
-========         `"")----------------(""`   ___________      ========
-========        /::::::::::|  |::::::::::\  \ no mouse \     ========
-========       /:::========|  |==hjkl==:::\  \ required \    ========
-========      '""""""""""""'  '""""""""""""'  '""""""""""'   ========
-========                                                     ========
-=====================================================================
-=====================================================================
---]]
-
--- The line beneath this is called `modeline`. See `:help modeline`
--- vim: ts=2 sts=2 sw=2 et
+if not vim.g.vscode then
+	require("user.mason")
+	require("user.cmp")
+	require("user.autopairs")
+	require("user.filetype")
+	require("user.formatter")
+	require("user.illuminate")
+	require("user.indentline")
+	require("user.nvimtree")
+	require("user.telescope")
+	require("user.treesitter")
+	require("user.comments")
+	require("user.renamer")
+	require("user.noice")
+	require("user.tabout")
+	-- require("user.smoothscrolling")
+	require("user.scrollback")
+	require("user.harpoon")
+end
