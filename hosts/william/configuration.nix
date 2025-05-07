@@ -67,6 +67,11 @@ in
   networking = {
     hostName = hostName;
     networkmanager.enable = true;
+    nameservers = [
+        "1.1.1.1"
+        "1.0.0.1"
+        "8.8.8.8"
+    ];
     timeServers = options.networking.timeServers.default ++ [ "pool.ntp.org" ];
     firewall = {
       allowedTCPPorts = [ 8003 ];
