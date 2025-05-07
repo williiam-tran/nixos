@@ -259,7 +259,7 @@ in
     tree
     exfatprogs
 
-    # inputs.nixCats.packages.${pkgs.system}.nvim
+    inputs.nixCats.packages.${pkgs.system}.nvim
     # inputs.ghostty.packages.${pkgs.system}.default
 
     # File management and archives
@@ -415,6 +415,9 @@ in
   };
 
   services = {
+    logrotate = {
+      checkConfig = false;
+    };
     xserver = {
       enable = false;
       xkb = {
@@ -593,8 +596,6 @@ in
     # require enabling PolKit integration on some desktop environments (e.g. Plasma).
     polkitPolicyOwners = [ "william" ];
   };
-
-  xdg.configFile.nvim.source = ../../dotfiles/.config/nvim;
   xdg.mime.defaultApplications = {
     # Web and HTML
     "x-scheme-handler/http" = "zen.desktop";
