@@ -34,7 +34,6 @@ in
       ".config/dunst".source = ../../dotfiles/.config/dunst;
       ".config/fastfetch".source = ../../dotfiles/.config/fastfetch;
       ".config/kitty".source = ../../dotfiles/.config/kitty;
-      ".config/nvim".source = ../../dotfiles/.config/nvim;
       ".config/mpv".source = ../../dotfiles/.config/mpv;
       ".config/tmux/tmux.conf".source = ../../dotfiles/.config/tmux/tmux.conf;
       ".config/waybar".source = ../../dotfiles/.config/waybar;

@@ -15,7 +15,7 @@ vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
 if vim.g.vscode then
-	require("lazy").setup("user.vscode.plugins", {
+	require("lazy").setup("plugins.vscode", {
 		defaults = { lazy = false },
 		checker = {
 			enabled = false,

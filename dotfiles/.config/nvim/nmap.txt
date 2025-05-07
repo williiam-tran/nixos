@@ -1,0 +1,39 @@
+
+
+
+n  s/          * <Lua 118: ~/.config/nvim/lua/user/keymaps.lua:287>
+                 [/] Fuzzily search in current buffer]
+n  shn         * <Lua 199: ~/.local/share/nvim/lazy/mini.surround/lua/mini/surround.lua:1269>
+                 Highlight next surrounding
+n  sFn         * <Lua 198: ~/.local/share/nvim/lazy/mini.surround/lua/mini/surround.lua:1269>
+                 Find next left surrounding
+n  sfn         * <Lua 197: ~/.local/share/nvim/lazy/mini.surround/lua/mini/surround.lua:1269>
+                 Find next right surrounding
+n  srn         * <Lua 196: ~/.local/share/nvim/lazy/mini.surround/lua/mini/surround.lua:1248>
+                 Replace next surrounding
+n  sdn         * <Lua 195: ~/.local/share/nvim/lazy/mini.surround/lua/mini/surround.lua:1248>
+                 Delete next surrounding
+n  shl         * <Lua 194: ~/.local/share/nvim/lazy/mini.surround/lua/mini/surround.lua:1269>
+                 Highlight previous surrounding
+n  sFl         * <Lua 193: ~/.local/share/nvim/lazy/mini.surround/lua/mini/surround.lua:1269>
+                 Find previous left surrounding
+n  sfl         * <Lua 192: ~/.local/share/nvim/lazy/mini.surround/lua/mini/surround.lua:1269>
+                 Find previous right surrounding
+n  srl         * <Lua 191: ~/.local/share/nvim/lazy/mini.surround/lua/mini/surround.lua:1248>
+                 Replace previous surrounding
+n  sdl         * <Lua 190: ~/.local/share/nvim/lazy/mini.surround/lua/mini/surround.lua:1248>
+                 Delete previous surrounding
+n  sn          * <Lua 189: ~/.local/share/nvim/lazy/mini.surround/lua/mini/surround.lua:899>
+                 Update `MiniSurround.config.n_lines`
+n  sh          * <Lua 188: ~/.local/share/nvim/lazy/mini.surround/lua/mini/surround.lua:1269>
+                 Highlight surrounding
+n  sF          * <Lua 187: ~/.local/share/nvim/lazy/mini.surround/lua/mini/surround.lua:1269>
+                 Find left surrounding
+n  sf          * <Lua 186: ~/.local/share/nvim/lazy/mini.surround/lua/mini/surround.lua:1269>
+                 Find right surrounding
+n  sr          * <Lua 185: ~/.local/share/nvim/lazy/mini.surround/lua/mini/surround.lua:1248>
+                 Replace surrounding
+n  sd          * <Lua 184: ~/.local/share/nvim/lazy/mini.surround/lua/mini/surround.lua:1248>
+                 Delete surrounding
+n  sa          * <Lua 183: ~/.local/share/nvim/lazy/mini.surround/lua/mini/surround.lua:1248>
+                 Add surrounding

@@ -1,34 +1,35 @@
-local dap = require('dap')
-local adapter = {
-  type = 'server';
-  host = '127.0.0.1';
-  port = 5000;
-  enrich_config = function(config, on_config)
-    local final_config = vim.deepcopy(config)
-    final_config.extra_property = 'This got injected by the adapter'
-    on_config(final_config)
-  end;
-}
-dap.configurations.java = {
-  {
-    type = 'java';
-    request = 'launch';
-    name = "Launch file";
-    program = "${file}";
-    pythonPath = function()
-      return '/usr/bin/java'
-    end;
-  },
-}
+-- local dap = require("dap")
 
-dap.adapters.java = {
-  type = 'executable';
-}
-local M = {}
-dap.adapters.java = function(callback, config)
-  M.execute_command({ command = 'vscode.java.startDebugSession' }, function(err0, port)
-    assert(not err0, vim.inspect(err0))
-
-    callback({ type = 'server'; host = '127.0.0.1'; port = port; })
-  end)
-end
+-- local adapter = {
+-- 	type = "server",
+-- 	host = "127.0.0.1",
+-- 	port = 5000,
+-- 	enrich_config = function(config, on_config)
+-- 		local final_config = vim.deepcopy(config)
+-- 		final_config.extra_property = "This got injected by the adapter"
+-- 		on_config(final_config)
+-- 	end,
+-- }
+-- dap.configurations.java = {
+-- 	{
+-- 		type = "java",
+-- 		request = "launch",
+-- 		name = "Launch file",
+-- 		program = "${file}",
+-- 		pythonPath = function()
+-- 			return "/usr/bin/java"
+-- 		end,
+-- 	},
+-- }
+--
+-- dap.adapters.java = {
+-- 	type = "executable",
+-- }
+-- local M = {}
+-- dap.adapters.java = function(callback, config)
+-- 	M.execute_command({ command = "vscode.java.startDebugSession" }, function(err0, port)
+-- 		assert(not err0, vim.inspect(err0))
+--
+-- 		callback({ type = "server", host = "127.0.0.1", port = port })
+-- 	end)
+-- end

@@ -66,12 +66,14 @@ in
 
   networking = {
     hostName = hostName;
-    networkmanager.enable = true;
-    nameservers = [
+    networkmanager = {
+      enable = true;
+      insertNameservers = [
         "1.1.1.1"
         "1.0.0.1"
         "8.8.8.8"
-    ];
+      ];
+    };
     timeServers = options.networking.timeServers.default ++ [ "pool.ntp.org" ];
     firewall = {
       allowedTCPPorts = [ 8003 ];
@@ -84,6 +86,13 @@ in
   time.timeZone = timeZone;
 
   i18n = {
+    inputMethod = {
+      enabled = "fcitx5";
+      fcitx5.addons = with pkgs; [
+        fcitx5-gtk
+        fcitx5-unikey
+      ];
+    };
     defaultLocale = "en_US.UTF-8";
     extraLocaleSettings = {
       LC_ADDRESS = "en_US.UTF-8";
@@ -120,10 +129,10 @@ in
     };
     image = ../../config/assets/wall.png;
     polarity = "dark";
-    opacity.terminal = 0.8;
+    opacity.terminal = 0.9;
     cursor.package = pkgs.bibata-cursors;
     cursor.name = "Bibata-Modern-Ice";
-    cursor.size = 24;
+    cursor.size = 28;
     fonts = {
       monospace = {
         package = pkgs.nerd-fonts.jetbrains-mono;
@@ -205,6 +214,8 @@ in
     inputs.zen-browser.packages."${system}".default
 
     # Programming languages and tools
+    unstable.code-cursor
+
     go
     go-blueprint
     go-migrate
@@ -264,7 +275,7 @@ in
     tree
     exfatprogs
 
-    inputs.nixCats.packages.${pkgs.system}.nvim
+    # inputs.nixCats.packages.${pkgs.system}.nvim
     # inputs.ghostty.packages.${pkgs.system}.default
 
     # File management and archives
@@ -286,7 +297,7 @@ in
     # Network and internet tools
     aria2
     qbittorrent
-    cloudflare-warp
+    # cloudflare-warp
     tailscale
 
     # Audio and video
@@ -401,6 +412,9 @@ in
     fira-sans
     roboto
     noto-fonts-cjk-sans
+    nerd-fonts.fira-code
+    fira-code
+    fira-code-symbols
     font-awesome
     material-icons
   ];
@@ -429,7 +443,7 @@ in
         layout = "us";
         variant = "";
       };
-      videoDrivers = [ "modesetting" ];
+      videoDrivers = [ "nvidia" ];
     };
     displayManager.sddm = {
       enable = true;
@@ -451,7 +465,7 @@ in
         HandlePowerKey=suspend
       '';
     };
-    cloudflare-warp.enable = true;
+    # cloudflare-warp.enable = true;
     # supergfxd.enable = true;
     # asusd = {
     #   enable = true;

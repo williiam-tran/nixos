@@ -1,32 +1,7 @@
-require("Comment").setup({
-
-	padding = true,
-	sticky = true,
-	ignore = nil,
-
-	toggler = {
-		---Line-comment toggle keymap
-		line = "<C-_>",
-		---Block-comment toggle keymap
-		block = "gbc",
-	},
-
-	opleader = {
-		line = "gc",
-		block = "gb",
-	},
-
-	extra = {
-		above = "gcO",
-		below = "gco",
-		eol = "gcA",
-	},
-
+require("mini.comment").setup({
 	mappings = {
-		basic = true,
-		extra = true,
+		comment = "<D-f>",
+		comment_visual = "<D-/>",
+		comment_line = "<D-/>",
 	},
-
-	pre_hook = nil,
-	post_hook = nil,
 })

@@ -1,4 +1,4 @@
-vim.cmd[[
+vim.cmd([[
     vim.g["ycm_language_server"] += [{ 
      \   'name': 'lua',
      \  'filetypes': [ 'lua' ],
@@ -7,4 +7,4 @@ vim.cmd[[
      \  'triggerCharacters': []
      \  },
      \]
-]]
+]])

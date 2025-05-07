@@ -1,2 +1,1 @@
-require('renamer').setup {
-}
+require("renamer").setup({})
