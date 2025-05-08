@@ -10,15 +10,18 @@ if [[ ! -d "$ZINIT_HOME" ]]; then
 fi
 source "${ZINIT_HOME}/zinit.zsh"
 
+# Set emacs edit mode
+bindkey -e
+
 # Load plugins
 zinit light zdharma-continuum/zinit-annex-as-monitor
 zinit light Aloxaf/fzf-tab
 zinit light zsh-users/zsh-syntax-highlighting
 zinit light zsh-users/zsh-completions
 zinit light zsh-users/zsh-autosuggestions
-zinit light jeffreytse/zsh-vi-mode
 zinit light agkozak/zsh-z
 zinit light romkatv/powerlevel10k
+zinit light junegunn/fzf
 
 # Load OMZ snippets
 zinit snippet OMZP::git
@@ -47,7 +50,6 @@ setopt hist_find_no_dups
 setopt HIST_REDUCE_BLANKS
 
 # Keybindings
-bindkey -v
 bindkey '^p' history-search-backward
 bindkey '^n' history-search-forward
 bindkey '^[w' kill-region
@@ -55,7 +57,36 @@ bindkey '^w' backward-kill-word
 bindkey '^el' vi-forward-char
 bindkey '^[[A' history-search-backward
 bindkey '^[[B' history-search-forward
-bindkey '^P' fzf-completion
+
+# Environment variables
+export EDITOR="/usr/bin/nvim"
+export PATH="$HOME/.local/bin:$HOME/.cargo/bin:$HOME/.local/share/pnpm:$PATH"
+export PNPM_HOME="$HOME/.local/share/pnpm"
+export GOPATH="$HOME/go"
+export PATH="$PATH:$GOPATH/bin:/usr/local/go/bin"
+export FZF_DEFAULT_OPTS="--height=40% --layout=reverse --color=bg:#272525,hl:#9cdcfe,hl+:#9cdcfe"
+export PYENV_ROOT="$HOME/.pyenv"
+export MIX_HOME="$HOME/.mix"
+export MIX_ARCHIVES="$MIX_HOME/archives"
+
+# Custom FZF commands
+export FZF_DEFAULT_COMMAND="fd --type f --hidden --exclude .git --exclude node_modules --exclude '*/\.*/*' --exclude '/usr/*' --exclude '/etc/*' --exclude '/var/*'"
+export FZF_CTRL_P_COMMAND="$FZF_DEFAULT_COMMAND"
+
+# Load fzf for shell
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# Custom fzf function for Ctrl+P
+fzf-file-widget-custom() {
+  local selected
+  selected=$(eval "$FZF_CTRL_P_COMMAND" | fzf -m)
+  if [ -n "$selected" ]; then
+    LBUFFER="${LBUFFER}${selected}"
+  fi
+  zle redisplay
+}
+zle -N fzf-file-widget-custom
+bindkey '^P' fzf-file-widget-custom
 
 # Aliases
 alias ..='cd ..' ...='cd ../..' .3='cd ../../..' .4='cd ../../../..' .5='cd ../../../../..'
@@ -75,17 +106,6 @@ alias ~="cd ~"
 alias edit="nvim ~/.zshrc"
 alias update="source ~/.zshrc"
 alias i="/usr/bin/nvim"
-# Environment variables
-export EDITOR="/usr/bin/nvim"
-export PATH="$HOME/.local/bin:$HOME/.cargo/bin:$HOME/.local/share/pnpm:$PATH"
-export PNPM_HOME="$HOME/.local/share/pnpm"
-export GOPATH="$HOME/go"
-export PATH="$PATH:$GOPATH/bin:/usr/local/go/bin"
-export FZF_DEFAULT_OPTS="--color=bg:#272525,hl:#9cdcfe,hl+:#9cdcfe"
-export PYENV_ROOT="$HOME/.pyenv"
-export MIX_HOME="$HOME/.mix"
-export MIX_ARCHIVES="$MIX_HOME/archives"
-
 
 # Tool integrations
 eval "$(zoxide init --cmd cd zsh)"

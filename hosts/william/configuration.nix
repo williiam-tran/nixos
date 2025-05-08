@@ -10,7 +10,7 @@ let
   username = "william";
   userDescription = "William Tran";
   homeDirectory = "/home/${username}";
-  hostName = "rudra";
+  hostName = "william";
   timeZone = "Asia/Ho_Chi_Minh";
 in
 {
@@ -30,6 +30,7 @@ in
     ../../modules/nvidia-prime-drivers.nix
     ../../modules/intel-drivers.nix
     inputs.home-manager.nixosModules.default
+    inputs.xremap-flake.nixosModules.default
   ];
 
   boot = {
@@ -101,6 +102,7 @@ in
       fcitx5.addons = with pkgs; [
         fcitx5-gtk
         fcitx5-unikey
+        fcitx5-hangul
       ];
     };
     defaultLocale = "en_US.UTF-8";
@@ -110,7 +112,6 @@ in
       LC_MEASUREMENT = "en_US.UTF-8";
       LC_MONETARY = "en_US.UTF-8";
       LC_NAME = "en_US.UTF-8";
-      LC_NUMERIC = "en_US.UTF-8";
       LC_PAPER = "en_US.UTF-8";
       LC_TELEPHONE = "en_US.UTF-8";
       LC_TIME = "en_US.UTF-8";
@@ -142,7 +143,7 @@ in
     opacity.terminal = 0.9;
     cursor.package = pkgs.bibata-cursors;
     cursor.name = "Bibata-Modern-Ice";
-    cursor.size = 28;
+    cursor.size = 32;
     fonts = {
       monospace = {
         package = pkgs.nerd-fonts.jetbrains-mono;
@@ -223,8 +224,11 @@ in
     # Zen Browser from custom input
     inputs.zen-browser.packages."${system}".default
 
+    unstable.caprine
+
     # Programming languages and tools
     unstable.code-cursor
+    fd
 
     go
     go-blueprint
@@ -416,12 +420,6 @@ in
     Exec=Hyprland
     Type=Application
   '';
-  environment.etc."libinput/local-overrides.quirks".text = ''
-    [Serial Keyboards]
-    MatchUdevType=keyboard
-    MatchName=keyd virtual keyboard
-    AttrKeyboardIntegration=internal
-  '';
 
   fonts.packages = with pkgs; [
     noto-fonts-emoji
@@ -450,21 +448,19 @@ in
   };
 
   services = {
-    keyd = {
-      enable = true;
-      keyboards = {
-        default = {
-          ids = [ "*" ];
-          settings = {
-            main = {
-              capslock = "layer(control)";
-              leftcontrol = "super";
-              leftmeta = "control";
-              rightcontrol = "super";
-              rightmeta = "control";
+    xremap = {
+      withHypr = true;
+      userName = "william";
+      config = {
+        modmap = [
+          {
+            name = "global";
+            remap = {
+              Alt_L = "Super_L";
+              Super_L = "Alt_L";
             };
-          };
-        };
+          }
+        ];
       };
     };
     logrotate = {
