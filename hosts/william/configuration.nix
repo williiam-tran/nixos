@@ -225,6 +225,8 @@ in
     inputs.zen-browser.packages."${system}".default
 
     unstable.caprine
+    unstable.tofi
+    unstable.obs-studio
 
     # Programming languages and tools
     unstable.code-cursor
@@ -673,11 +675,16 @@ in
 
   programs.hyprland.enable = true;
   programs.hyprland.withUWSM = true;
-  programs._1password.enable = true;
+  programs._1password = {
+    enable = true;
+    package = pkgs.unstable._1password-cli;
+  };
   programs._1password-gui = {
     enable = true;
+    package = pkgs.unstable._1password-gui;
     polkitPolicyOwners = [ "william" ];
   };
+
   xdg.mime.defaultApplications = {
     # Web and HTML
     "x-scheme-handler/http" = "zen.desktop";

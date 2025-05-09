@@ -139,6 +139,10 @@ in
     extraConfig = ''
       Host *
           IdentityAgent ${onePassPath}
+      Host germany-prod-server
+          User root
+          HostName 157.90.246.243
+          IdentityFile ~/.ssh/Hetzner
     '';
   };
 }
