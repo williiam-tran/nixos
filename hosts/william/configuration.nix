@@ -143,7 +143,7 @@ in
     opacity.terminal = 0.9;
     cursor.package = pkgs.bibata-cursors;
     cursor.name = "Bibata-Modern-Ice";
-    cursor.size = 32;
+    cursor.size = 40;
     fonts = {
       monospace = {
         package = pkgs.nerd-fonts.jetbrains-mono;
@@ -229,6 +229,7 @@ in
     # Programming languages and tools
     unstable.code-cursor
     fd
+    jq
 
     go
     go-blueprint
@@ -413,6 +414,41 @@ in
     customSddmTheme
     libsForQt5.qt5.qtgraphicaleffects
   ];
+
+  # Create a custom .desktop file for imv
+  environment.sessionVariables.XCURSOR_PATH = [
+    "${config.system.path}/share/icons"
+    "$HOME/.local/share/icons"
+    "$HOME/.icons"
+  ];
+
+  environment.etc."sddm/wayland-sessions/imv.desktop".text = ''
+    [Desktop Entry]
+    Name=imv
+    GenericName=Image Viewer
+    Comment=Fast image viewer
+    Exec=imv %F
+    Terminal=false
+    Type=Application
+    Categories=Graphics;Viewer;
+    MimeType=image/bmp;image/gif;image/jpeg;image/jpg;image/pjpeg;image/png;image/tiff;image/x-bmp;image/x-pcx;image/x-png;image/x-portable-anymap;image/x-portable-bitmap;image/x-portable-graymap;image/x-portable-pixmap;image/x-tga;image/x-xbitmap;image/webp;image/svg+xml;
+    Keywords=Image;Viewer;
+  '';
+
+  environment.etc."sddm/wayland-sessions/cider.desktop".text = ''
+    [Desktop Entry]
+    Name=Cider
+    GenericName=Music Player
+    Comment=Apple Music client
+    Exec=/home/william/Downloads/cider-v2.0.3-linux-x64.AppImage %U
+    Icon=cider
+    Terminal=false
+    Type=Application
+    Categories=Audio;Music;Player;AudioVideo;
+    MimeType=audio/aac;audio/flac;audio/mp4;audio/mpeg;audio/ogg;audio/x-vorbis+ogg;audio/wav;audio/webm;
+    Keywords=apple;music;player;
+    StartupWMClass=Cider
+  '';
 
   environment.etc."sddm/wayland-sessions/hyprland.desktop".text = ''
     [Desktop Entry]
@@ -662,6 +698,17 @@ in
 
     # Terminal
     "x-scheme-handler/terminal" = "kitty.desktop";
+
+    # Images
+    "image/png" = "imv.desktop";
+    "image/jpeg" = "imv.desktop";
+    "image/jpg" = "imv.desktop";
+    "image/gif" = "imv.desktop";
+    "image/webp" = "imv.desktop";
+    "image/svg+xml" = "imv.desktop";
+    "image/bmp" = "imv.desktop";
+    "image/tiff" = "imv.desktop";
+    "image/x-tga" = "imv.desktop";
 
     # Videos
     "video/quicktime" = "mpv-2.desktop";

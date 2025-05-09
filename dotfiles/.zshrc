@@ -109,7 +109,7 @@ alias i="/usr/bin/nvim"
 
 # Tool integrations
 eval "$(zoxide init --cmd cd zsh)"
-eval "$(fnm env --use-on-cd)"
+eval "$(fnm env --use-on-cd --shell zsh)"
 [ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
