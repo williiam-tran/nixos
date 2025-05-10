@@ -227,6 +227,7 @@ in
     unstable.caprine
     unstable.tofi
     unstable.obs-studio
+    unstable.ventoy
 
     # Programming languages and tools
     unstable.code-cursor
@@ -633,6 +634,9 @@ in
   services.blueman.enable = true;
 
   security = {
+    sudo = {
+      wheelNeedsPassword = false;
+    };
     rtkit.enable = true;
     polkit = {
       enable = true;
