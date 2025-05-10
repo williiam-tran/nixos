@@ -1,11 +1,10 @@
 [SddmGreeterTheme]
-Name=sddm-astronaut-theme
+Name=rose-pine-g
 Description=sddm-astronaut-theme
 License=GPL-3.0-or-later
 Type=sddm-theme
-Version=1.3
-ConfigFile=theme.conf
+Version=1.2
 Screenshot=Previews/astronaut.png
+ConfigFile=theme.conf
 MainScript=Main.qml
 TranslationsDirectory=translations
-QtVersion=6

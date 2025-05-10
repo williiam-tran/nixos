@@ -418,11 +418,15 @@ in
     # Miscellaneous
     greetd.tuigreet
     customSddmTheme
-    libsForQt5.qt5.qtgraphicaleffects
-    libsForQt5.qt5.qtmultimedia
-    libsForQt5.qt5.qtquickcontrols
-    libsForQt5.qt5.qtquickcontrols2
-    libsForQt5.qt5.qtwayland
+    unstable.libsForQt5.qt5.qtgraphicaleffects
+    unstable.libsForQt5.qt5.qtmultimedia
+
+    # unstable.sddm-astronaut
+    # unstable.kdePackages.qtwayland
+    # unstable.kdePackages.sddm
+    # unstable.kdePackages.qtsvg
+    # unstable.kdePackages.qtmultimedia
+    # unstable.kdePackages.qtvirtualkeyboard
   ];
 
   # Create a custom .desktop file for imv
@@ -525,21 +529,13 @@ in
       wayland.enable = true; # Enable Wayland backend
       theme = "rose-pine"; # Your custom theme name
     };
-    # greetd = {
-    #   enable = true;
-    #   vt = 3;
-    #   settings = {
-    #     default_session = {
-    #       user = username;
-    #       command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --cmd Hyprland";
-    #     };
-    #   };
-    # };
+
     logind = {
       extraConfig = ''
         HandlePowerKey=suspend
       '';
     };
+
     # cloudflare-warp.enable = true;
     # supergfxd.enable = true;
     # asusd = {
@@ -730,17 +726,6 @@ in
 
     # Terminal
     "x-scheme-handler/terminal" = "kitty.desktop";
-
-    # Images
-    "image/png" = "imv.desktop";
-    "image/jpeg" = "imv.desktop";
-    "image/jpg" = "imv.desktop";
-    "image/gif" = "imv.desktop";
-    "image/webp" = "imv.desktop";
-    "image/svg+xml" = "imv.desktop";
-    "image/bmp" = "imv.desktop";
-    "image/tiff" = "imv.desktop";
-    "image/x-tga" = "imv.desktop";
 
     # Videos
     "video/quicktime" = "mpv-2.desktop";

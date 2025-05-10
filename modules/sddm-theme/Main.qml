@@ -3,10 +3,10 @@
 // Based on https://github.com/MarianArlt/sddm-sugar-dark
 // Distributed under the GPLv3+ License https://www.gnu.org/licenses/gpl-3.0.html
 
-import QtQuick 2.15
-import QtQuick.Layouts 1.15
+import QtQuick 2.11
+import QtQuick.Layouts 1.11
 import QtQuick.Controls 2.15
-import QtQuick.Effects 5.15
+import QtGraphicalEffects 1.0
 import QtMultimedia 5.15
 
 import "Components"
@@ -193,15 +193,10 @@ Pane {
             
             MediaPlayer {
                 id: player
-                
                 videoOutput: videoOutput
                 autoPlay: true
                 playbackRate: config.BackgroundSpeed == "" ? 1.0 : config.BackgroundSpeed
                 loops: -1
-                onPlayingChanged: {
-                    console.log("Video started.")
-                    backgroundPlaceholderImage.visible = false;
-                }
             }
 
             VideoOutput {
@@ -262,26 +257,6 @@ Pane {
 
             sourceItem: backgroundImage
             sourceRect: Qt.rect(x,y,width,height)
-            visible: config.FullBlur == "true" || config.PartialBlur == "true" ? true : false
-        }
-
-        MultiEffect {
-            id: blur
-            
-            height: parent.height
-
-            // width: config.FullBlur == "true" ? parent.width : form.width
-            // anchors.centerIn: config.FullBlur == "true" ? parent : form
-
-            // This solves problem when FullBlur and HaveFormBackground is set to true but PartialBlur is false and FormPosition isn't center.
-            width: (config.FullBlur == "true" && config.PartialBlur == "false" && config.FormPosition != "center" ) ? parent.width - formBackground.width : config.FullBlur == "true" ? parent.width : form.width 
-            anchors.centerIn: config.FullBlur == "true" ? backgroundImage : form
-
-            source: config.FullBlur == "true" ? backgroundImage : blurMask
-            blurEnabled: true
-            autoPaddingEnabled: false
-            blur: config.Blur == "" ? 2.0 : config.Blur
-            blurMax: config.BlurMax == "" ? 48 : config.BlurMax
             visible: config.FullBlur == "true" || config.PartialBlur == "true" ? true : false
         }
     }
