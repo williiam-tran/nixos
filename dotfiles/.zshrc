@@ -89,6 +89,7 @@ zle -N fzf-file-widget-custom
 bindkey '^P' fzf-file-widget-custom
 
 # Aliases
+alias gu='gitupdate'
 alias ..='cd ..' ...='cd ../..' .3='cd ../../..' .4='cd ../../../..' .5='cd ../../../../..'
 alias l='eza -lh --icons=auto' ls='eza -1 --icons=auto' ll='eza -lha --icons=auto --sort=name --group-directories-first'
 alias ld='eza -lhD --icons=auto' lt='lsd --tree --depth 1 --sizesort --reverse'
