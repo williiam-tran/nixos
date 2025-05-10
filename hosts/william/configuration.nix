@@ -419,6 +419,10 @@ in
     greetd.tuigreet
     customSddmTheme
     libsForQt5.qt5.qtgraphicaleffects
+    libsForQt5.qt5.qtmultimedia
+    libsForQt5.qt5.qtquickcontrols
+    libsForQt5.qt5.qtquickcontrols2
+    libsForQt5.qt5.qtwayland
   ];
 
   # Create a custom .desktop file for imv

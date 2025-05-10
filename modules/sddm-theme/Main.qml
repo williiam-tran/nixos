@@ -6,8 +6,8 @@
 import QtQuick 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
-import QtQuick.Effects
-import QtMultimedia
+import QtQuick.Effects 5.15
+import QtMultimedia 5.15
 
 import "Components"
 
