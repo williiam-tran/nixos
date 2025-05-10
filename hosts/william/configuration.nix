@@ -436,34 +436,6 @@ in
     "$HOME/.icons"
   ];
 
-  environment.etc."sddm/wayland-sessions/imv.desktop".text = ''
-    [Desktop Entry]
-    Name=imv
-    GenericName=Image Viewer
-    Comment=Fast image viewer
-    Exec=imv %F
-    Terminal=false
-    Type=Application
-    Categories=Graphics;Viewer;
-    MimeType=image/bmp;image/gif;image/jpeg;image/jpg;image/pjpeg;image/png;image/tiff;image/x-bmp;image/x-pcx;image/x-png;image/x-portable-anymap;image/x-portable-bitmap;image/x-portable-graymap;image/x-portable-pixmap;image/x-tga;image/x-xbitmap;image/webp;image/svg+xml;
-    Keywords=Image;Viewer;
-  '';
-
-  environment.etc."sddm/wayland-sessions/cider.desktop".text = ''
-    [Desktop Entry]
-    Name=Cider
-    GenericName=Music Player
-    Comment=Apple Music client
-    Exec=/home/william/Downloads/cider-v2.0.3-linux-x64.AppImage %U
-    Icon=cider
-    Terminal=false
-    Type=Application
-    Categories=Audio;Music;Player;AudioVideo;
-    MimeType=audio/aac;audio/flac;audio/mp4;audio/mpeg;audio/ogg;audio/x-vorbis+ogg;audio/wav;audio/webm;
-    Keywords=apple;music;player;
-    StartupWMClass=Cider
-  '';
-
   environment.etc."sddm/wayland-sessions/hyprland.desktop".text = ''
     [Desktop Entry]
     Name=Hyprland
