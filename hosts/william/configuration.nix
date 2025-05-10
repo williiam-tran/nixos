@@ -57,7 +57,9 @@ in
         device = "nodev";
         efiSupport = true;
         useOSProber = true;
+        timeoutStyle = "hidden";
       };
+      timeout = 0;
     };
     tmp = {
       useTmpfs = true;
@@ -227,7 +229,9 @@ in
     unstable.caprine
     unstable.tofi
     unstable.obs-studio
-    unstable.ventoy
+    unstable.ventoy-full-gtk
+    unstable.vimPlugins.neogit
+    unstable.luajitPackages.luarocks
 
     # Programming languages and tools
     unstable.code-cursor
@@ -242,11 +246,12 @@ in
     air
     lua
     python3
-    python3Packages.pip
+    python312Packages.pip
     uv
     clang
     zig
     rustup
+    cargo
     nodePackages_latest.pnpm
     nodePackages_latest.yarn
     fnm
@@ -271,7 +276,6 @@ in
     lazydocker
     bruno
     postman
-    bruno-cli
     gnumake
     coreutils
     nixfmt-rfc-style
@@ -283,7 +287,6 @@ in
     wget
     killall
     eza
-    starship
     kitty
     neovim
     zoxide
@@ -603,6 +606,20 @@ in
   # powerManagement.powertop.enable = true;
 
   systemd.services = {
+    onepassword = {
+      script = ''
+        1password &
+      '';
+      # "Enable" the service
+      wantedBy = [ "multi-user.target" ];
+    };
+    cider = {
+      script = ''
+        ${pkgs.appimage-run}/bin/appimage-run /home/william/Downloads/cider-v2.0.3-linux-x64.AppImage &
+      '';
+      # "Enable" the service
+      wantedBy = [ "multi-user.target" ];
+    };
     flatpak-repo = {
       path = [ pkgs.flatpak ];
       script = "flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo";

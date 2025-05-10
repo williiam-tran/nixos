@@ -44,6 +44,20 @@ in
       # Individual config files
       ".config/kwalletrc".source = ../../dotfiles/.config/kwalletrc;
       ".config/starship.toml".source = ../../dotfiles/.config/starship.toml;
+      ".config/autostart/cider.desktop".text = ''
+        [Desktop Entry]
+        Name=Cider
+        GenericName=Music Player
+        Comment=Apple Music client
+        Exec=/home/william/Downloads/cider-v2.0.3-linux-x64.AppImage %U
+        Icon=cider
+        Terminal=false
+        Type=Application
+        Categories=Audio;Music;Player;AudioVideo;
+        MimeType=audio/aac;audio/flac;audio/mp4;audio/mpeg;audio/ogg;audio/x-vorbis+ogg;audio/wav;audio/webm;
+        Keywords=apple;music;player;
+        StartupWMClass=Cider
+      '';
     };
 
     sessionVariables = {

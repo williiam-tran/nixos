@@ -15,6 +15,7 @@
     zen-browser.url = "github:0xc000022070/zen-browser-flake";
     hyprpanel.url = "github:Jas-SinghFSU/HyprPanel";
     xremap-flake.url = "github:xremap/nix-flake";
+    dolphin-overlay.url = "github:rumboon/dolphin-overlay";
   };
 
   outputs =
@@ -23,6 +24,7 @@
       nixpkgs,
       nixCats,
       hyprpanel,
+      dolphin-overlay,
       ...
     }@inputs:
     let
@@ -60,6 +62,7 @@
               nixpkgs.overlays = [
                 customSddmThemeOverlay
                 hyprpanel.overlay
+                dolphin-overlay.overlays.default
               ];
             }
           )
