@@ -140,7 +140,7 @@ in
       base0E = "f6c177";
       base0F = "524f67";
     };
-    image = ../../config/assets/wall.png;
+    image = ../../config/assets/black_hole.png;
     polarity = "dark";
     opacity.terminal = 0.9;
     cursor.package = pkgs.bibata-cursors;
@@ -444,6 +444,16 @@ in
     Type=Application
   '';
 
+  environment.etc = {
+    "1password/custom_allowed_browsers" = {
+      text = ''
+        zen
+        zen-browser
+      '';
+      mode = "0755";
+    };
+  };
+
   fonts.packages = with pkgs; [
     noto-fonts-emoji
     fira-sans
@@ -580,9 +590,8 @@ in
 
   systemd.services = {
     onepassword = {
-      script = ''
-        1password &
-      '';
+      path = [ pkgs.unstable._1password-cli ];
+      script = "1password --silent %U";
       # "Enable" the service
       wantedBy = [ "multi-user.target" ];
     };

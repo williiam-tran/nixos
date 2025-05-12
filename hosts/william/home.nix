@@ -107,7 +107,7 @@ in
   ];
 
   # Styling
-  stylix.targets.waybar.enable = false;
+  stylix.targets.waybar.enable = true;
   gtk = {
     iconTheme = {
       name = "Papirus-Dark";
