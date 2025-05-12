@@ -127,7 +127,7 @@ in
       inputs.lightly.packages.${pkgs.system}.darkly-qt5
       inputs.lightly.packages.${pkgs.system}.darkly-qt6
     ];
-    style.name = "Darkly";
+    # style.name = "Darkly";
     platformTheme.name = "qtct";
   };
 

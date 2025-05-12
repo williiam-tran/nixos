@@ -114,6 +114,7 @@ eval "$(fnm env --use-on-cd --shell zsh)"
 [ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
+export QT_STYLE_OVERRIDE=Darkly
 
 # Functions
 function gitupdate() {
