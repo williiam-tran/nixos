@@ -597,7 +597,6 @@ in
       script = ''
         ${pkgs.appimage-run}/bin/appimage-run /home/william/Downloads/cider-v2.0.3-linux-x64.AppImage &
       '';
-      # "Enable" the service
       wantedBy = [ "multi-user.target" ];
     };
     flatpak-repo = {

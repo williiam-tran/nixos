@@ -20,7 +20,7 @@ toggleterm.setup({
 	persist_size = true,
 	direction = "float",
 	close_on_exit = true,
-	shell = "pwsh",
+	shell = "zsh",
 	float_opts = {
 		border = "curved",
 		highlights = {

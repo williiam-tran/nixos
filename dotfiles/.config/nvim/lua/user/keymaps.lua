@@ -436,7 +436,7 @@ if not vim.g.vscode then
     -- Telescope
     keymap(
         "n",
-        "<D-p>",
+        "<C-p>",
         '<cmd>lua require("telescope.builtin").find_files(require"telescope.themes".get_dropdown({previewer=true}))<CR>',
         opts
     )

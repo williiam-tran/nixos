@@ -17,9 +17,10 @@ return {
             "echasnovski/mini.pick",         -- optional
         },
         cmd = "Neogit",
-        lazy = true,
+        lazy = false,
         config = false
     },
+
     {
         'mikesmithgh/kitty-scrollback.nvim',
         enabled = true,
@@ -65,7 +66,9 @@ return {
             },
         },
     },
+
     { "Bilal2453/luvit-meta",                   lazy = true }, -- optional `vim.uv` typings
+
     {
         "hrsh7th/nvim-cmp",
         opts = function(_, opts)

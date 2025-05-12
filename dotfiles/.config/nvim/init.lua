@@ -10,7 +10,6 @@ if vim.g.vscode then
     require("user.vscode.treesitter")
     require("user.cmp")
 else
-    -- require("user.git")
     require("user.autopairs")
     require("user.autocmds")
     require("user.cmp")

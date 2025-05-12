@@ -41,7 +41,7 @@ vim.g.netrw_ssh_cmd = "ssh -X" -- Enable X11 forwarding for better performance
 vim.g.netrw_scp_cmd = "scp -q"
 vim.opt.shortmess:append("aAcCFIoOstTWqixm")
 vim.opt.shadafile = "NONE"
-vim.o.shell = "pwsh"
+vim.o.shell = "zsh"
 vim.o.shellcmdflag = "-command"
 vim.o.shellquote = '"'
 vim.opt.title = false
