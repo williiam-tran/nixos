@@ -8,7 +8,7 @@
 }
 
 window#waybar {
-  background: transparent;
+  background-color: transparent;
 }
 
 #waybar.empty #window {
@@ -27,14 +27,14 @@ window#waybar {
 #custom-right,
 #custom-left {
   color: #e0def4; /* Rose Pine Moon - Text */
-  background: transparent; /* Set to transparent for full transparency */
+  background-color: transparent; /* Set to transparent for full transparency */
   margin: 4px 0px 4px 0px;
   opacity: 1;
   border: 0px solid #181825;
 }
 
 tooltip {
-  background: transparent; /* Rose Pine Moon - Base */
+  background-color: transparent; /* Rose Pine Moon - Base */
   color: #e0def4; /* Rose Pine Moon - Text */
   border-radius: 22px;
   border-width: 2px;
@@ -57,7 +57,7 @@ tooltip {
 }
 
 #workspaces button.active {
-  background: #393552; /* Rose Pine Moon - Overlay */
+  background: transparent; /* Rose Pine Moon - Overlay */
   color: #c4a7e7; /* Rose Pine Moon - Iris */
   margin-left: 3px;
   padding-left: 12px;
