@@ -283,6 +283,7 @@ in
     ninja
 
     # Shell and terminal utilities
+    croc
     stow
     wget
     killall
