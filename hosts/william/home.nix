@@ -1,6 +1,7 @@
 {
   config,
   pkgs,
+  inputs,
   ...
 }:
 let
@@ -122,7 +123,11 @@ in
   };
   qt = {
     enable = true;
-    style.name = "kvantum";
+    style.package = [
+      inputs.lightly.packages.${pkgs.system}.darkly-qt5
+      inputs.lightly.packages.${pkgs.system}.darkly-qt6
+    ];
+    style.name = "Darkly";
     platformTheme.name = "qtct";
   };
 

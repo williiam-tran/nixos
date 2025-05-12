@@ -16,6 +16,7 @@
     hyprpanel.url = "github:Jas-SinghFSU/HyprPanel";
     xremap-flake.url = "github:xremap/nix-flake";
     dolphin-overlay.url = "github:rumboon/dolphin-overlay";
+    lightly.url = "github:Bali10050/Darkly";
   };
 
   outputs =

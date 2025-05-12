@@ -160,10 +160,10 @@ in
         name = "Montserrat";
       };
       sizes = {
-        applications = 12;
-        terminal = 15;
-        desktop = 11;
-        popups = 12;
+        applications = 14;
+        terminal = 16;
+        desktop = 14;
+        popups = 14;
       };
     };
   };
@@ -587,14 +587,12 @@ in
   };
 
   # powerManagement.powertop.enable = true;
+  systemd.user.services.onepassword = {
+    script = "${pkgs.unstable._1password-gui}/bin/1password --silent %U";
+    wantedBy = [ "multi-user.target" ];
+  };
 
   systemd.services = {
-    onepassword = {
-      path = [ pkgs.unstable._1password-cli ];
-      script = "1password --silent %U";
-      # "Enable" the service
-      wantedBy = [ "multi-user.target" ];
-    };
     cider = {
       script = ''
         ${pkgs.appimage-run}/bin/appimage-run /home/william/Downloads/cider-v2.0.3-linux-x64.AppImage &

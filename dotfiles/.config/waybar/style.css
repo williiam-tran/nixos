@@ -23,14 +23,14 @@ window#waybar {
 #custom-right,
 #custom-left {
   color: #e0def4; /* Rose Pine Moon - Text */
-  background: #232136; /* Rose Pine Moon - Base */
+  background: transparent; /* Set to transparent for full transparency */
   margin: 4px 0px 4px 0px;
   opacity: 1;
   border: 0px solid #181825;
 }
 
 tooltip {
-  background: #232136; /* Rose Pine Moon - Base */
+  background: transparent; /* Rose Pine Moon - Base */
   color: #e0def4; /* Rose Pine Moon - Text */
   border-radius: 22px;
   border-width: 2px;
