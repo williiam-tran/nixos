@@ -568,7 +568,7 @@ in
     };
     ipp-usb.enable = true;
     syncthing = {
-      enable = true;
+      enable = false;
       user = username;
       dataDir = homeDirectory;
       configDir = "${homeDirectory}/.config/syncthing";
@@ -589,7 +589,7 @@ in
   # powerManagement.powertop.enable = true;
   systemd.user.services.onepassword = {
     script = "${pkgs.unstable._1password-gui}/bin/1password --silent %U";
-    wantedBy = [ "multi-user.target" ];
+    wantedBy = [ "default.target" ];
   };
 
   systemd.services = {
