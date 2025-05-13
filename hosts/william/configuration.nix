@@ -12,6 +12,7 @@ let
   homeDirectory = "/home/${username}";
   hostName = "william";
   timeZone = "Asia/Ho_Chi_Minh";
+  pkgs-unstable = inputs.hyprland.inputs.nixpkgs.legacyPackages.${pkgs.stdenv.hostPlatform.system};
 in
 {
   nixpkgs.overlays = [
@@ -29,6 +30,7 @@ in
     ../../modules/nvidia-drivers.nix
     ../../modules/nvidia-prime-drivers.nix
     ../../modules/intel-drivers.nix
+    ../../modules/sunshine.nix
     inputs.home-manager.nixosModules.default
     inputs.xremap-flake.nixosModules.default
   ];
@@ -88,9 +90,24 @@ in
     };
     timeServers = options.networking.timeServers.default ++ [ "pool.ntp.org" ];
     firewall = {
-      allowedTCPPorts = [ 8003 ];
-    };
-    firewall = {
+      enable = true;
+      allowedTCPPorts = [
+        8003
+        47984
+        47989
+        47990
+        48010
+      ];
+      allowedUDPPortRanges = [
+        {
+          from = 47998;
+          to = 48000;
+        }
+        {
+          from = 8000;
+          to = 8010;
+        }
+      ];
       checkReversePath = "loose";
     };
   };
@@ -184,6 +201,11 @@ in
   };
 
   programs = {
+    steam = {
+      enable = true;
+      remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
+      dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
+    };
     nix-ld = {
       enable = true;
       package = pkgs.nix-ld-rs;
@@ -201,6 +223,13 @@ in
         thunar-archive-plugin
         thunar-volman
       ];
+    };
+    hyprland = {
+      enable = true;
+      package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
+      # make sure to also set the portal package, so that they are in sync
+      portalPackage =
+        inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
     };
   };
 
@@ -280,6 +309,8 @@ in
     coreutils
     nixfmt-rfc-style
     meson
+    cpio
+    cmake
     ninja
 
     # Shell and terminal utilities
@@ -313,7 +344,8 @@ in
     # System monitoring and management
     htop
     btop
-    # nvtopPackages.nvidia
+    nvtopPackages.nvidia
+    nvidia-vaapi-driver
     anydesk
 
     # Network and internet tools
@@ -327,6 +359,8 @@ in
     pavucontrol
     ffmpeg
     mpv
+    x265
+    kvazaar
     deadbeef-with-plugins
 
     # Image and graphics
@@ -350,6 +384,7 @@ in
 
     # Gaming and entertainment
     stremio
+    steam
 
     # System utilities
     libgcc
@@ -365,9 +400,13 @@ in
     ripgrep
     lshw
     bat
-    pkg-config
+    wayland-scanner
+    udis86
+    hyprwayland-scanner
+    pkgconf
     brightnessctl
     virt-viewer
+    sunshine
     swappy
     appimage-run
     yad
@@ -422,12 +461,6 @@ in
     unstable.libsForQt5.qt5.qtgraphicaleffects
     unstable.libsForQt5.qt5.qtmultimedia
 
-    # unstable.sddm-astronaut
-    # unstable.kdePackages.qtwayland
-    # unstable.kdePackages.sddm
-    # unstable.kdePackages.qtsvg
-    # unstable.kdePackages.qtmultimedia
-    # unstable.kdePackages.qtvirtualkeyboard
   ];
 
   # Create a custom .desktop file for imv
@@ -481,8 +514,18 @@ in
   };
 
   services = {
+    sunshine = {
+      enable = true;
+      autoStart = true;
+      capSysAdmin = true;
+      openFirewall = true;
+      package = pkgs.sunshine.override {
+        cudaSupport = true;
+      };
+    };
     xremap = {
       withHypr = true;
+      serviceMode = "user";
       userName = "william";
       config = {
         modmap = [
@@ -565,6 +608,10 @@ in
       enable = true;
       nssmdns4 = true;
       openFirewall = true;
+      publish = {
+        enable = true;
+        userServices = true;
+      };
     };
     ipp-usb.enable = true;
     syncthing = {
@@ -589,6 +636,11 @@ in
   # powerManagement.powertop.enable = true;
   systemd.user.services.onepassword = {
     script = "${pkgs.unstable._1password-gui}/bin/1password --silent %U";
+    wantedBy = [ "default.target" ];
+  };
+
+  systemd.user.services.xremap = {
+    enable = true;
     wantedBy = [ "default.target" ];
   };
 
@@ -624,7 +676,20 @@ in
       enable = true;
       powerOnBoot = true;
     };
-    graphics.enable = true;
+    graphics = {
+      enable = true;
+      enable32Bit = true;
+      package = pkgs-unstable.mesa.drivers;
+      package32 = pkgs-unstable.pkgsi686Linux.mesa.drivers;
+      extraPackages = with pkgs; [
+        # your Open GL, Vulkan and VAAPI drivers
+        vpl-gpu-rt # for newer GPUs on NixOS &gt;24.05 or unstable
+        onevpl-intel-gpu # for newer GPUs on NixOS &lt;= 24.05
+        intel-media-driver
+        vaapi-intel-hybrid
+        libva-vdpau-driver
+      ];
+    };
   };
 
   services.blueman.enable = true;
@@ -673,7 +738,6 @@ in
     };
   };
 
-  programs.hyprland.enable = true;
   programs.hyprland.withUWSM = true;
   programs._1password = {
     enable = true;

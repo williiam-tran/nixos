@@ -17,6 +17,7 @@
     xremap-flake.url = "github:xremap/nix-flake";
     dolphin-overlay.url = "github:rumboon/dolphin-overlay";
     lightly.url = "github:Bali10050/Darkly";
+    hyprland.url = "github:hyprwm/Hyprland";
   };
 
   outputs =
@@ -70,6 +71,19 @@
           ./hosts/william/configuration.nix
           inputs.stylix.nixosModules.stylix
           inputs.home-manager.nixosModules.default
+        ];
+      };
+      homeConfigurations.william = inputs.home-manager.lib.homeManagerConfiguration {
+        pkgs = nixpkgs.legacyPackages.x86_64-linux;
+        modules = [
+          {
+            wayland.windowManager.hyprland = {
+              enable = true;
+              package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
+              portalPackage =
+                inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
+            };
+          }
         ];
       };
     };

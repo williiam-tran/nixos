@@ -88,6 +88,9 @@ in
       __GLX_VENDOR_LIBRARY_NAME = "nvidia";
       GBM_BACKEND = "nvidia-drm";
 
+      # Electron/Wayland hint
+      ELECTRON_OZONE_PLATFORM_HINT = "auto";
+
       # Localization
       LC_ALL = "en_US.UTF-8";
     };
