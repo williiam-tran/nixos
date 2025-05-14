@@ -315,7 +315,7 @@ in
     nixfmt-rfc-style
     meson
     cpio
-    python312Packages.cmake
+    cmake
     ninja
 
     # Shell and terminal utilities
@@ -821,7 +821,7 @@ in
   };
 
   home-manager = {
-    extraSpecialArgs = { inherit inputs; };
+    extraSpecialArgs = {inherit inputs;};
     users.${username} = import ./home.nix;
     useGlobalPkgs = true;
     useUserPackages = true;
