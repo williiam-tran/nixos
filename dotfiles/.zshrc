@@ -22,6 +22,7 @@ zinit light zsh-users/zsh-autosuggestions
 zinit light agkozak/zsh-z
 zinit light romkatv/powerlevel10k
 zinit light junegunn/fzf
+zinit light loiccoyle/zsh-github-copilot
 
 # Load OMZ snippets
 zinit snippet OMZP::git
@@ -50,6 +51,8 @@ setopt hist_find_no_dups
 setopt HIST_REDUCE_BLANKS
 
 # Keybindings
+bindkey '^[?' zsh_gh_copilot_explain  # bind Alt+shift+\ to explain
+bindkey '^_' zsh_gh_copilot_suggest  # bind Alt+\ to suggest
 bindkey '^p' history-search-backward
 bindkey '^n' history-search-forward
 bindkey '^[w' kill-region

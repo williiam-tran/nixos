@@ -226,10 +226,10 @@ in
     };
     hyprland = {
       enable = true;
-      package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
+      # package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
       # make sure to also set the portal package, so that they are in sync
-      portalPackage =
-        inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
+      #portalPackage =
+      # inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
     };
   };
 
@@ -255,6 +255,8 @@ in
     # Zen Browser from custom input
     inputs.zen-browser.packages."${system}".default
 
+    unstable.gh
+    unstable.aider-chat
     unstable.caprine
     unstable.tofi
     unstable.obs-studio
@@ -403,6 +405,11 @@ in
     wayland-scanner
     udis86
     hyprwayland-scanner
+    hyprutils
+    hyprlang
+    hyprgraphics
+    hyprcursor
+    aquamarine
     pkgconf
     brightnessctl
     virt-viewer
@@ -536,6 +543,8 @@ in
               Super_L = "Alt_L";
             };
           }
+        ];
+        keymap = [
         ];
       };
     };
@@ -679,12 +688,10 @@ in
     graphics = {
       enable = true;
       enable32Bit = true;
-      package = pkgs-unstable.mesa.drivers;
-      package32 = pkgs-unstable.pkgsi686Linux.mesa.drivers;
+      package = pkgs-unstable.mesa;
+      package32 = pkgs-unstable.pkgsi686Linux.mesa;
       extraPackages = with pkgs; [
-        # your Open GL, Vulkan and VAAPI drivers
-        vpl-gpu-rt # for newer GPUs on NixOS &gt;24.05 or unstable
-        onevpl-intel-gpu # for newer GPUs on NixOS &lt;= 24.05
+        vpl-gpu-rt
         intel-media-driver
         vaapi-intel-hybrid
         libva-vdpau-driver
