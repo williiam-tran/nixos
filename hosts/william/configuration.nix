@@ -165,15 +165,15 @@ in
     cursor.size = 40;
     fonts = {
       monospace = {
-        package = pkgs.nerd-fonts.jetbrains-mono;
-        name = "JetBrainsMono Nerd Font Mono";
+        package = pkgs.unstable.nerd-fonts.jetbrains-mono;
+        name = "JetBrainsMono derd Font Mono";
       };
       sansSerif = {
-        package = pkgs.montserrat;
+        package = pkgs.unstable.montserrat;
         name = "Montserrat";
       };
       serif = {
-        package = pkgs.montserrat;
+        package = pkgs.unstable.montserrat;
         name = "Montserrat";
       };
       sizes = {
@@ -226,14 +226,17 @@ in
     };
     hyprland = {
       enable = true;
+      withUWSM = true;
       # package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
-      # make sure to also set the portal package, so that they are in sync
-      #portalPackage =
+      # portalPackage =
       # inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
     };
   };
 
   nixpkgs.config.allowUnfree = true;
+  nixpkgs.config.permittedInsecurePackages = [
+    "ventoy-gtk3-1.1.05"
+  ];
 
   users = {
     mutableUsers = true;
@@ -254,7 +257,7 @@ in
   environment.systemPackages = with pkgs; [
     # Zen Browser from custom input
     inputs.zen-browser.packages."${system}".default
-
+    hyprlandPlugins.hyprsplit
     unstable.gh
     unstable.aider-chat
     unstable.caprine
@@ -312,7 +315,7 @@ in
     nixfmt-rfc-style
     meson
     cpio
-    cmake
+    python312Packages.cmake
     ninja
 
     # Shell and terminal utilities
@@ -346,7 +349,7 @@ in
     # System monitoring and management
     htop
     btop
-    nvtopPackages.nvidia
+    # nvtopPackages.nvidia
     nvidia-vaapi-driver
     anydesk
 
@@ -402,15 +405,12 @@ in
     ripgrep
     lshw
     bat
-    wayland-scanner
-    udis86
     hyprwayland-scanner
+    hyprland-protocols
+    hyprland-workspaces
     hyprutils
     hyprlang
-    hyprgraphics
-    hyprcursor
-    aquamarine
-    pkgconf
+    unstable.pkgconf
     brightnessctl
     virt-viewer
     sunshine
@@ -465,9 +465,8 @@ in
     # Miscellaneous
     greetd.tuigreet
     customSddmTheme
-    unstable.libsForQt5.qt5.qtgraphicaleffects
-    unstable.libsForQt5.qt5.qtmultimedia
-
+    libsForQt5.qt5.qtgraphicaleffects
+    libsForQt5.qt5.qtmultimedia
   ];
 
   # Create a custom .desktop file for imv
@@ -495,15 +494,14 @@ in
   };
 
   fonts.packages = with pkgs; [
-    noto-fonts-emoji
-    fira-sans
-    roboto
-    noto-fonts-cjk-sans
-    nerd-fonts.fira-code
-    fira-code
-    fira-code-symbols
-    font-awesome
-    material-icons
+    unstable.noto-fonts-emoji
+    unstable.fira-sans
+    unstable.roboto
+    unstable.jetbrains-mono
+    unstable.noto-fonts-cjk-sans
+    unstable.nerd-fonts.fira-code
+    unstable.font-awesome
+    unstable.material-icons
   ];
 
   xdg.portal = {
@@ -526,7 +524,7 @@ in
       autoStart = true;
       capSysAdmin = true;
       openFirewall = true;
-      package = pkgs.sunshine.override {
+      package = pkgs.unstable.sunshine.override {
         cudaSupport = true;
       };
     };
@@ -639,10 +637,11 @@ in
       jack.enable = true;
       wireplumber.enable = true;
     };
-    pulseaudio.enable = false;
+    # pulseaudio.enable = false;
   };
 
   # powerManagement.powertop.enable = true;
+  systemd.services.NetworkManager-wait-online.enable = false;
   systemd.user.services.onepassword = {
     script = "${pkgs.unstable._1password-gui}/bin/1password --silent %U";
     wantedBy = [ "default.target" ];
@@ -685,6 +684,17 @@ in
       enable = true;
       powerOnBoot = true;
     };
+    nvidia = {
+      open = false;
+      package = config.boot.kernelPackages.nvidiaPackages.mkDriver {
+        version = "575.51.02";
+        sha256_64bit = "sha256-XZ0N8ISmoAC8p28DrGHk/YN1rJsInJ2dZNL8O+Tuaa0=";
+        openSha256 = "sha256-NQg+QDm9Gt+5bapbUO96UFsPnz1hG1dtEwT/g/vKHkw=";
+        settingsSha256 = "sha256-6n9mVkEL39wJj5FB1HBml7TTJhNAhS/j5hqpNGFQE4w=";
+        usePersistenced = false;
+      };
+
+    };
     graphics = {
       enable = true;
       enable32Bit = true;
@@ -702,6 +712,8 @@ in
   services.blueman.enable = true;
 
   security = {
+    pam.services.gdm-password.enableGnomeKeyring = true;
+    pam.services.greetd.enableGnomeKeyring = true;
     sudo = {
       wheelNeedsPassword = false;
     };
@@ -730,6 +742,7 @@ in
 
   nix = {
     settings = {
+      download-buffer-size = 524288000;
       auto-optimise-store = true;
       experimental-features = [
         "nix-command"
@@ -745,7 +758,6 @@ in
     };
   };
 
-  programs.hyprland.withUWSM = true;
   programs._1password = {
     enable = true;
     package = pkgs.unstable._1password-cli;

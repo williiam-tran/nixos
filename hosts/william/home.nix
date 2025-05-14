@@ -7,7 +7,7 @@
 let
   userName = "william";
   homeDirectory = "/home/${userName}";
-  stateVersion = "24.05";
+  stateVersion = "24.11";
   onePassPath = "~/.1password/agent.sock";
 in
 {
@@ -130,7 +130,7 @@ in
       inputs.lightly.packages.${pkgs.system}.darkly-qt5
       inputs.lightly.packages.${pkgs.system}.darkly-qt6
     ];
-    # style.name = "Darkly";
+    style.name = "Darkly";
     platformTheme.name = "qtct";
   };
 
@@ -167,4 +167,7 @@ in
           IdentityFile ~/.ssh/Hetzner
     '';
   };
+  wayland.windowManager.hyprland.plugins = [
+    inputs.split-monitor-workspaces
+  ];
 }
