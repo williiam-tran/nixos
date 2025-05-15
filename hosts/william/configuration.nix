@@ -664,13 +664,13 @@ in
     wantedBy = [ "default.target" ];
   };
 
+  systemd.user.services.lan-mouse = {
+    script = "export PATH=$PATH:/usr/bin; lan-mouse daemon";
+    path = [ "/usr/bin" ];
+    wantedBy = [ "default.target" ];
+  };
+
   systemd.services = {
-    lan-mouse = {
-      script = ''
-        /usr/bin/lan-mouse daemon &
-      '';
-      wantedBy = [ "multi-user.target" ];
-    };
     cider = {
       script = ''
         ${pkgs.appimage-run}/bin/appimage-run /home/william/Downloads/cider-v2.0.3-linux-x64.AppImage &
