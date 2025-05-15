@@ -171,8 +171,7 @@ in
       package = null;
       systemd.variables = ["--all"];
       extraConfig = ''
-        monitor=DP-3,2560x1440@75,0x0,1
-        monitor=DP-4,2560x1440@75,2560x0,1
+        monitor=,highres,auto,1
 ###################
 ### MY PROGRAMS ###
 ###################

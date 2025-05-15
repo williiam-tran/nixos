@@ -2,18 +2,30 @@
     "layer": "top",
     "position": "top",
     "mod": "dock",
-    "height": 36,
+    "height": 28,
     "exclusive": true,
     "passthrough": false,
     "gtk-layer-shell": true,
-
-
-	"modules-left": ["custom/left","custom/rofi","backlight","pulseaudio","battery","custom/right"],
-	"modules-center": ["custom/left","hyprland/workspaces","custom/right"],
-	"modules-right": ["custom/left","tray","clock","custom/right"],
-
- 
-   "network": {
+    "modules-left": [
+        "custom/left",
+        "custom/rofi",
+        "backlight",
+        "pulseaudio",
+        "battery",
+        "custom/right"
+    ],
+    "modules-center": [
+        "custom/left",
+        "hyprland/workspaces",
+        "custom/right"
+    ],
+    "modules-right": [
+        "custom/left",
+        "tray",
+        "clock",
+        "custom/right"
+    ],
+    "network": {
         "tooltip": true,
         "format-wifi": "<span foreground='#FF8B49'> {bandwidthDownBytes}</span> <span foreground='#FF6962'> {bandwidthUpBytes}</span>",
         "format-ethernet": "<span foreground='#FF8B49'> {bandwidthDownBytes}</span> <span foreground='#FF6962'> {bandwidthUpBytes}</span>",
@@ -23,22 +35,18 @@
         "tooltip-format-disconnected": "Disconnected",
         "interval": 2,
         "on-click-right": "~/.config/waybar/network.py"
-  },
-
-
-    "temperature": {
-    // "thermal-zone": 2,
-    // "hwmon-path": "/sys/class/hwmon/hwmon2/temp1_input",
-    // "critical-threshold": 80,
-    // "format-critical": "{temperatureC}°C ",
-    "format": "{temperatureC}°C "
     },
-
-     "custom/rofi": {
+    "temperature": {
+        // "thermal-zone": 2,
+        // "hwmon-path": "/sys/class/hwmon/hwmon2/temp1_input",
+        // "critical-threshold": 80,
+        // "format-critical": "{temperatureC}°C ",
+        "format": "{temperatureC}°C "
+    },
+    "custom/rofi": {
         "format": "  {}",
         "on-click": "rofi -show drun"
-	},
-
+    },
     "hyprland/workspaces": {
         "disable-scroll": true,
         "all-outputs": true,
@@ -51,21 +59,31 @@
             "5": []
         }
     },
-
     "battery": {
         "states": {
             "good": 95,
             "warning": 30,
             "critical": 20,
-                "Fuck off Switch off": 10
+            "Fuck off Switch off": 10
         },
         "format": "{icon} {capacity}%",
         "format-charging": " {capacity}%",
         "format-plugged": " {capacity}%",
         "format-alt": "{time} {icon}",
-        "format-icons": ["󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"]
+        "format-icons": [
+            "󰂎",
+            "󰁺",
+            "󰁻",
+            "󰁼",
+            "󰁽",
+            "󰁾",
+            "󰁿",
+            "󰂀",
+            "󰂁",
+            "󰂂",
+            "󰁹"
+        ]
     },
- 
     "pulseaudio": {
         "format": "{icon} {volume}",
         "format-muted": "󰖁",
@@ -82,50 +100,47 @@
             "phone": "",
             "portable": "",
             "car": "",
-            "default": ["", "", ""]
-   }
+            "default": [
+                "",
+                "",
+                ""
+            ]
+        }
     },
-
-
     "tray": {
-      "icon-size": 20,
-        "spacing": 9
+        "icon-size": 16,
+        "spacing": 6
     },
-
-
-  "clock": {
+    "clock": {
         "format": " {:%H:%M}",
         "on-click": "~/.config/eww/scripts/toggle_control_center.sh"
-      },
-
-
-"backlight": {
-    "device": "intel_backlight",
-    "on-scroll-up": "light -A 7",
-    "on-scroll-down": "light -U 7",
-    "format": "{icon} {percent}%",
-    "format-icons": [
-      "󰃞",
-      "󰃟",
-      "󰃠",
-      "󱩎",
-      "󱩏",
-      "󱩐",
-      "󱩑",
-      "󱩒",
-      "󱩓",
-      "󰛨"
-    ]
-},
+    },
+    "backlight": {
+        "device": "intel_backlight",
+        "on-scroll-up": "light -A 7",
+        "on-scroll-down": "light -U 7",
+        "format": "{icon} {percent}%",
+        "format-icons": [
+            "󰃞",
+            "󰃟",
+            "󰃠",
+            "󱩎",
+            "󱩏",
+            "󱩐",
+            "󱩑",
+            "󱩒",
+            "󱩓",
+            "󰛨"
+        ]
+    },
     "custom/left": {
         "format": " ",
-        "interval" : "once",
+        "interval": "once",
         "tooltip": false
     },
-
     "custom/right": {
         "format": " ",
-        "interval" : "once",
+        "interval": "once",
         "tooltip": false
     }
 }
