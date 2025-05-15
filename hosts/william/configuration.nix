@@ -667,6 +667,7 @@ in
   systemd.user.services.lan-mouse = {
     script = "export PATH=$PATH:/usr/bin; lan-mouse daemon";
     path = [ "/usr/bin" ];
+    environment.HOME = "/home/william";
     wantedBy = [ "default.target" ];
   };
 
