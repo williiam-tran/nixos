@@ -93,10 +93,20 @@ in
       enable = true;
       allowedTCPPorts = [
         8003
+        9009
+        9010
+        9011
+        9012
+        9013
+        4242
         47984
         47989
         47990
         48010
+      ];
+      allowedUDPPorts = [
+        24800
+        4242
       ];
       allowedUDPPortRanges = [
         {
@@ -253,11 +263,13 @@ in
       ];
     };
   };
-
+  xdg.portal.config.common.default = "*";
   environment.systemPackages = with pkgs; [
     # Zen Browser from custom input
     inputs.zen-browser.packages."${system}".default
     hyprlandPlugins.hyprsplit
+    unstable.zsync2
+    unstable.barrier
     unstable.gh
     unstable.aider-chat
     unstable.caprine
@@ -653,6 +665,12 @@ in
   };
 
   systemd.services = {
+    lan-mouse = {
+      script = ''
+        /usr/bin/lan-mouse daemon &
+      '';
+      wantedBy = [ "multi-user.target" ];
+    };
     cider = {
       script = ''
         ${pkgs.appimage-run}/bin/appimage-run /home/william/Downloads/cider-v2.0.3-linux-x64.AppImage &
@@ -821,7 +839,7 @@ in
   };
 
   home-manager = {
-    extraSpecialArgs = {inherit inputs;};
+    extraSpecialArgs = { inherit inputs; };
     users.${username} = import ./home.nix;
     useGlobalPkgs = true;
     useUserPackages = true;
