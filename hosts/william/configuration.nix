@@ -93,14 +93,11 @@ in
       enable = true;
       allowedTCPPorts = [
         8003
-        24800   # barrier port
-        4242    # lan-mouse
         47984
         47989
         47990
         48010
       ];
-      allowedUDPPorts = [ 80 443 24800 4242 ];
       allowedUDPPortRanges = [
         {
           from = 47998;
@@ -261,8 +258,6 @@ in
     # Zen Browser from custom input
     inputs.zen-browser.packages."${system}".default
     hyprlandPlugins.hyprsplit
-    unstable.lan-mouse
-    unstable.barrier
     unstable.gh
     unstable.aider-chat
     unstable.caprine
@@ -647,8 +642,16 @@ in
 
   # powerManagement.powertop.enable = true;
   systemd.services.NetworkManager-wait-online.enable = false;
+
   systemd.user.services.onepassword = {
     script = "${pkgs.unstable._1password-gui}/bin/1password --silent %U";
+    wantedBy = [ "default.target" ];
+  };
+
+  systemd.user.services.lan-mouse = {
+    script = "export PATH=$PATH:/usr/bin; lan-mouse daemon";
+    path = ["/usr/bin"];
+    environment.HOME = "/home/william/";
     wantedBy = [ "default.target" ];
   };
 
