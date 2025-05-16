@@ -280,7 +280,6 @@ in
     unstable.luajitPackages.luarocks
 
     # Programming languages and tools
-    unstable.code-cursor
     fd
     jq
 
