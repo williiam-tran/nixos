@@ -268,6 +268,7 @@ in
     # Zen Browser from custom input
     inputs.zen-browser.packages."${system}".default
     inputs.hyprswitch.packages.x86_64-linux.default
+    syncthing
     unstable.celluloid
     unstable.zsync2
     unstable.barrier
@@ -634,7 +635,7 @@ in
     };
     ipp-usb.enable = true;
     syncthing = {
-      enable = false;
+      enable = true;
       user = username;
       dataDir = homeDirectory;
       configDir = "${homeDirectory}/.config/syncthing";
