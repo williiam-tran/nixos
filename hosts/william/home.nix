@@ -211,6 +211,7 @@ in
 #################
         exec-once = nm-applet &
         exec-once = hyprpanel
+        exec-once = hyprswitch init --show-title --size-factor 5.5 --workspaces-per-row 5 &
 
         exec-once = wl-paste --type text --watch cliphist store # clipboard store text data
         exec-once = wl-paste --type image --watch cliphist store # clipboard store image data

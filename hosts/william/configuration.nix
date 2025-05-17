@@ -267,7 +267,8 @@ in
   environment.systemPackages = with pkgs; [
     # Zen Browser from custom input
     inputs.zen-browser.packages."${system}".default
-    hyprlandPlugins.hyprsplit
+    inputs.hyprswitch.packages.x86_64-linux.default
+    unstable.celluloid
     unstable.zsync2
     unstable.barrier
     unstable.gh
@@ -667,7 +668,11 @@ in
     script = "export PATH=$PATH:/usr/bin; lan-mouse daemon";
     path = [ "/usr/bin" ];
     environment.HOME = "/home/william";
-    wantedBy = [ "default.target" ];
+    wantedBy = [ "graphical.target" ];
+    serviceConfig = {
+      Restart = "on-failure";
+      RestartSec = 5; # Wait 5 seconds before restarting
+    };
   };
 
   systemd.services = {
