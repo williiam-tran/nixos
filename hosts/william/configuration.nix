@@ -666,13 +666,13 @@ in
   };
 
   systemd.user.services.lan-mouse = {
-    script = "export PATH=$PATH:/usr/bin; lan-mouse daemon";
+    script = "export PATH=$PATH:/usr/bin; /home/william/scripts/lan-mouse.sh";
     path = [ "/usr/bin" ];
     environment.HOME = "/home/william";
     wantedBy = [ "graphical.target" ];
     serviceConfig = {
       Restart = "on-failure";
-      RestartSec = 5; # Wait 5 seconds before restarting
+      RestartSec = 3; # Wait 5 seconds before restarting
     };
   };
 
