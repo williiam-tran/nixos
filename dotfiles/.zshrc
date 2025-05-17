@@ -91,6 +91,21 @@ fzf-file-widget-custom() {
 zle -N fzf-file-widget-custom
 bindkey '^P' fzf-file-widget-custom
 
+fzf-command-complete() {
+  local matches selected
+  matches=("${(@f)$(print -l ${(u)commands} ${(k)aliases} ${(k)functions} | sort -u | fzf --query="$LBUFFER" --select-1 --exit-0 --no-sort --filter="$LBUFFER")}")
+  if (( ${#matches[@]} == 1 )); then
+    LBUFFER="${matches[1]} "
+  elif (( ${#matches[@]} > 1 )); then
+    selected=$(print -l ${(u)commands} ${(k)aliases} ${(k)functions} | sort -u | fzf --query="$LBUFFER" --select-1 --exit-0)
+    if [[ -n $selected ]]; then
+      LBUFFER="$selected "
+    fi
+  fi
+  zle reset-prompt
+}
+zle -N fzf-command-complete
+
 # Aliases
 alias gu='gitupdate'
 alias ..='cd ..' ...='cd ../..' .3='cd ../../..' .4='cd ../../../..' .5='cd ../../../../..'
