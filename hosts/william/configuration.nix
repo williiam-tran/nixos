@@ -267,6 +267,7 @@ in
   environment.systemPackages = with pkgs; [
     # Zen Browser from custom input
     inputs.zen-browser.packages."${system}".default
+    inputs.hyprswitch.packages.x86_64-linux.default
     hyprlandPlugins.hyprsplit
     unstable.zsync2
     unstable.barrier
@@ -664,10 +665,14 @@ in
   };
 
   systemd.user.services.lan-mouse = {
-    script = "export PATH=$PATH:/usr/bin; lan-mouse daemon";
+    script = "export PATH=$PATH:/usr/bin; /home/william/scripts/lan-mouse.sh";
     path = [ "/usr/bin" ];
     environment.HOME = "/home/william";
-    wantedBy = [ "default.target" ];
+    wantedBy = [ "graphical.target" ];
+    serviceConfig = {
+        Restart = "on-failure";
+        RestartSec = 5;
+    };
   };
 
   systemd.services = {

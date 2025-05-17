@@ -23,6 +23,7 @@
     split-monitor-workspaces = {
       url = "github:Duckonaut/split-monitor-workspaces";
     };
+    hyprswitch.url = "github:h3rmt/hyprswitch/release";
   };
 
   outputs =
