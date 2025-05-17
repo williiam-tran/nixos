@@ -166,24 +166,40 @@ in
           IdentityFile ~/.ssh/Hetzner
     '';
   };
+   
+  xdg.portal.config.common.default = "*"; 
+  xdg.desktopEntries = {
+      cider = {
+          name = "Cider";
+          genericName = "Apple Music";
+          exec = "/home/william/Downloads/cider-v2.0.3-linux-x64.AppImage %U";
+          icon = "/home/william/applications/cider/tray.png";
+          terminal = false;
+          categories = [ "Application" "Music" ];
+          mimeType = [ "text/html" "text/xml" ];
+      }; 
+      cursor = {
+          name = "Cursor";
+          genericName = "Apple Music";
+          exec = "/home/william/Downloads/Cursor-0.50.4-x86_64.AppImage %U";
+          terminal = false;
+          icon = "/home/william/applications/cursor/code.png";
+          categories = [ "Application" "Music" ];
+          mimeType = [ "text/plain" "inode/directory" "application/x-cursor-workspace" ];
+      }; 
+  };
+  
+
   wayland.windowManager.hyprland = {
       enable = true;
       package = null;
       systemd.variables = ["--all"];
       extraConfig = ''
         monitor=,highres,auto,1
-###################
-### MY PROGRAMS ###
-###################
-
         $terminal = kitty --single-instance --listen-on unix:/tmp/kitty
         $menu = rofi -show drun
-# $menu = wofi --show drun
         $scrPath = $HOME/.dotfiles/scripts
 
-#################
-### AUTOSTART ###
-#################
         exec-once = nm-applet &
         exec-once = hyprpanel
 

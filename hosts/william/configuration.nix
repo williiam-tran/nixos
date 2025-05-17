@@ -93,10 +93,20 @@ in
       enable = true;
       allowedTCPPorts = [
         8003
+        9009
+        9010
+        9011
+        9012
+        9013
+        4242
         47984
         47989
         47990
         48010
+      ];
+      allowedUDPPorts = [
+        24800
+        4242
       ];
       allowedUDPPortRanges = [
         {
@@ -253,11 +263,13 @@ in
       ];
     };
   };
-
+  xdg.portal.config.common.default = "*";
   environment.systemPackages = with pkgs; [
     # Zen Browser from custom input
     inputs.zen-browser.packages."${system}".default
     hyprlandPlugins.hyprsplit
+    unstable.zsync2
+    unstable.barrier
     unstable.gh
     unstable.aider-chat
     unstable.caprine
@@ -268,7 +280,6 @@ in
     unstable.luajitPackages.luarocks
 
     # Programming languages and tools
-    unstable.code-cursor
     fd
     jq
 
@@ -642,21 +653,20 @@ in
 
   # powerManagement.powertop.enable = true;
   systemd.services.NetworkManager-wait-online.enable = false;
-
   systemd.user.services.onepassword = {
     script = "${pkgs.unstable._1password-gui}/bin/1password --silent %U";
     wantedBy = [ "default.target" ];
   };
 
-  systemd.user.services.lan-mouse = {
-    script = "export PATH=$PATH:/usr/bin; lan-mouse daemon";
-    path = ["/usr/bin"];
-    environment.HOME = "/home/william/";
+  systemd.user.services.xremap = {
+    enable = true;
     wantedBy = [ "default.target" ];
   };
 
-  systemd.user.services.xremap = {
-    enable = true;
+  systemd.user.services.lan-mouse = {
+    script = "export PATH=$PATH:/usr/bin; lan-mouse daemon";
+    path = [ "/usr/bin" ];
+    environment.HOME = "/home/william";
     wantedBy = [ "default.target" ];
   };
 
@@ -829,7 +839,7 @@ in
   };
 
   home-manager = {
-    extraSpecialArgs = {inherit inputs;};
+    extraSpecialArgs = { inherit inputs; };
     users.${username} = import ./home.nix;
     useGlobalPkgs = true;
     useUserPackages = true;
