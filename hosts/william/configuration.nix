@@ -81,6 +81,7 @@ in
   networking = {
     hostName = hostName;
     networkmanager = {
+      wifi.powersave = false;
       enable = true;
       insertNameservers = [
         "1.1.1.1"
@@ -198,6 +199,15 @@ in
   virtualisation = {
     docker = {
       enable = true;
+      rootless = {
+        enable = true;
+        setSocketVariable = true;
+      };
+      daemon = {
+        settings = {
+          data-root = "/home/william/docker-data";
+        };
+      };
     };
     libvirtd = {
       enable = true;
@@ -266,15 +276,14 @@ in
   xdg.portal.config.common.default = "*";
   environment.systemPackages = with pkgs; [
     # Zen Browser from custom input
-    inputs.zen-browser.packages."${system}".default
     inputs.hyprswitch.packages.x86_64-linux.default
     syncthing
+    unstable.cloudflared
     unstable.celluloid
     unstable.zsync2
     unstable.barrier
     unstable.gh
     unstable.aider-chat
-    unstable.caprine
     unstable.tofi
     unstable.obs-studio
     unstable.ventoy-full-gtk
@@ -301,11 +310,14 @@ in
     cargo
     nodePackages_latest.pnpm
     nodePackages_latest.yarn
+    prisma-engines
     fnm
     bun
     maven
     mongodb-compass
     gcc
+    ruby
+    lsof
     openssl
     nodePackages_latest.live-server
 
@@ -321,6 +333,7 @@ in
     gh
     lazygit
     lazydocker
+    docker-compose
     bruno
     postman
     gnumake
@@ -369,7 +382,7 @@ in
     # Network and internet tools
     aria2
     qbittorrent
-    # cloudflare-warp
+    cloudflare-warp
     tailscale
 
     # Audio and video
@@ -395,10 +408,12 @@ in
     libreoffice-qt6-fresh
 
     # Communication and social
+    unstable.discord
+    unstable.caprine
 
     # Browsers
     firefox
-    google-chrome
+    inputs.zen-browser.packages."${system}".default
 
     # Gaming and entertainment
     stremio
@@ -582,7 +597,24 @@ in
       '';
     };
 
-    # cloudflare-warp.enable = true;
+    cloudflared = {
+      package = pkgs.unstable.cloudflared;
+      enable = true;
+      # tunnels = {
+      #   "22414bb7-b356-42bd-8355-15569c8afa5b" = {
+      #     warp-routing.enabled = true;
+      #     credentialsFile = "/home/william/.cloudflared/22414bb7-b356-42bd-8355-15569c8afa5b.json";
+      #     default = "http_status:404";
+      #     ingress = {
+      #     "devhome.igtcollege.edu.vn" = {
+      #       service = "http://localhost:3000";
+      #     };
+      #     };
+      #   };
+      # };
+    };
+
+    cloudflare-warp.enable = false;
     # supergfxd.enable = true;
     # asusd = {
     #   enable = true;
@@ -709,6 +741,7 @@ in
       powerOnBoot = true;
     };
     nvidia = {
+      powerManagement.enable = true;
       open = false;
       package = config.boot.kernelPackages.nvidiaPackages.mkDriver {
         version = "575.51.02";

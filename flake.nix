@@ -24,6 +24,7 @@
       url = "github:Duckonaut/split-monitor-workspaces";
     };
     hyprswitch.url = "github:h3rmt/hyprswitch/release";
+    prisma-utils.url = "github:VanCoding/nix-prisma-utils";
   };
 
   outputs =
@@ -34,6 +35,7 @@
       hyprpanel,
       dolphin-overlay,
       split-monitor-workspaces,
+      prisma-utils,
       ...
     }@inputs:
     let
@@ -51,9 +53,23 @@
         };
       };
 
+      prisma =
+        (prisma-utils.lib.prisma-factory {
+          inherit pkgs;
+          # just copy these hashes for now, and then change them when nix complains about the mismatch
+          prisma-fmt-hash = "sha256-4zsJv0PW8FkGfiiv/9g0y5xWNjmRWD8Q2l2blSSBY3s="; 
+          query-engine-hash = "sha256-6ILWB6ZmK4ac6SgAtqCkZKHbQANmcqpWO92U8CfkFzw=";
+          libquery-engine-hash = "sha256-n9IimBruqpDJStlEbCJ8nsk8L9dDW95ug+gz9DHS1Lc=";
+          schema-engine-hash = "sha256-j38xSXOBwAjIdIpbSTkFJijby6OGWCoAx+xZyms/34Q=";
+        }).fromNpmLock
+          ./package-lock.json; # <--- path to our package-lock.json file that contains the version of prisma-engines
       pkgs = nixpkgs.legacyPackages.${system};
     in
     {
+      devShells.${system}.default = pkgs.mkShell {
+        env = prisma.env;
+        shellHook = prisma.shellHook;
+      };
       nixosConfigurations.william = nixpkgs.lib.nixosSystem {
         inherit system;
         specialArgs = { inherit inputs; };

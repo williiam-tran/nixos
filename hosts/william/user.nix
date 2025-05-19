@@ -19,6 +19,7 @@ in
       extraGroups = [
         "wheel"
         "docker"
+        "docker-instructure"
         "wireshark"
         "libvirtd"
         "kvm"
