@@ -107,6 +107,7 @@ fzf-command-complete() {
 zle -N fzf-command-complete
 
 # Aliases
+alias ssh="kitty +kitten ssh"
 alias gu='gitupdate'
 alias ..='cd ..' ...='cd ../..' .3='cd ../../..' .4='cd ../../../..' .5='cd ../../../../..'
 alias l='eza -lh --icons=auto' ls='eza -1 --icons=auto' ll='eza -lha --icons=auto --sort=name --group-directories-first'

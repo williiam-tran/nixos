@@ -25,6 +25,8 @@
     };
     hyprswitch.url = "github:h3rmt/hyprswitch/release";
     prisma-utils.url = "github:VanCoding/nix-prisma-utils";
+    alejandra.url = "github:kamadorueda/alejandra/4.0.0";
+    alejandra.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs =
@@ -36,6 +38,7 @@
       dolphin-overlay,
       split-monitor-workspaces,
       prisma-utils,
+      alejandra,
       ...
     }@inputs:
     let

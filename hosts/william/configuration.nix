@@ -5,16 +5,14 @@
   inputs,
   options,
   ...
-}:
-let
+}: let
   username = "william";
   userDescription = "William Tran";
   homeDirectory = "/home/${username}";
   hostName = "william";
   timeZone = "Asia/Ho_Chi_Minh";
   pkgs-unstable = inputs.hyprland.inputs.nixpkgs.legacyPackages.${pkgs.stdenv.hostPlatform.system};
-in
-{
+in {
   nixpkgs.overlays = [
     (final: _: {
       # this allows you to access `pkgs.unstable` anywhere in your config
@@ -37,8 +35,8 @@ in
 
   boot = {
     kernelPackages = pkgs.linuxPackages_zen;
-    kernelModules = [ "v4l2loopback" ];
-    extraModulePackages = [ config.boot.kernelPackages.v4l2loopback ];
+    kernelModules = ["v4l2loopback"];
+    extraModulePackages = [config.boot.kernelPackages.v4l2loopback];
     kernel.sysctl = {
       "vm.max_map_count" = 2147483642;
     };
@@ -80,8 +78,12 @@ in
 
   networking = {
     hostName = hostName;
+    nameservers = [
+      "1.1.1.1"
+      "1.0.0.1"
+      "8.8.8.8"
+    ];
     networkmanager = {
-      wifi.powersave = false;
       enable = true;
       insertNameservers = [
         "1.1.1.1"
@@ -89,7 +91,7 @@ in
         "8.8.8.8"
       ];
     };
-    timeServers = options.networking.timeServers.default ++ [ "pool.ntp.org" ];
+    timeServers = options.networking.timeServers.default ++ ["pool.ntp.org"];
     firewall = {
       enable = true;
       allowedTCPPorts = [
@@ -275,8 +277,17 @@ in
   };
   xdg.portal.config.common.default = "*";
   environment.systemPackages = with pkgs; [
+    # Wine
+    unstable.winetricks
+
+    # native wayland support (unstable)
+    unstable.wineWowPackages.stagingFull
+    unstable.wineWowPackages.waylandFull
+
     # Zen Browser from custom input
     inputs.hyprswitch.packages.x86_64-linux.default
+    inputs.alejandra.defaultPackage.${pkgs.system}
+
     syncthing
     unstable.cloudflared
     unstable.celluloid
@@ -414,6 +425,7 @@ in
     # Browsers
     firefox
     inputs.zen-browser.packages."${system}".default
+    google-chrome
 
     # Gaming and entertainment
     stremio
@@ -547,6 +559,13 @@ in
   };
 
   services = {
+    postgresql = {
+      enable = true;
+      authentication = pkgs.lib.mkOverride 10 ''
+        #type database  DBuser  auth-method
+        local all       all     trust
+      '';
+    };
     sunshine = {
       enable = true;
       autoStart = true;
@@ -583,7 +602,7 @@ in
         layout = "us";
         variant = "";
       };
-      videoDrivers = [ "nvidia" ];
+      videoDrivers = ["nvidia"];
     };
     displayManager.sddm = {
       enable = true;
@@ -689,19 +708,19 @@ in
   systemd.services.NetworkManager-wait-online.enable = false;
   systemd.user.services.onepassword = {
     script = "${pkgs.unstable._1password-gui}/bin/1password --silent %U";
-    wantedBy = [ "default.target" ];
+    wantedBy = ["default.target"];
   };
 
   systemd.user.services.xremap = {
     enable = true;
-    wantedBy = [ "default.target" ];
+    wantedBy = ["default.target"];
   };
 
   systemd.user.services.lan-mouse = {
     script = "export PATH=$PATH:/usr/bin; /home/william/scripts/lan-mouse.sh";
-    path = [ "/usr/bin" ];
+    path = ["/usr/bin"];
     environment.HOME = "/home/william";
-    wantedBy = [ "graphical.target" ];
+    wantedBy = ["graphical.target"];
     serviceConfig = {
       Restart = "on-failure";
       RestartSec = 3; # Wait 5 seconds before restarting
@@ -713,24 +732,24 @@ in
       script = ''
         ${pkgs.appimage-run}/bin/appimage-run /home/william/Downloads/cider-v2.0.3-linux-x64.AppImage &
       '';
-      wantedBy = [ "multi-user.target" ];
+      wantedBy = ["multi-user.target"];
     };
     flatpak-repo = {
-      path = [ pkgs.flatpak ];
+      path = [pkgs.flatpak];
       script = "flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo";
     };
     libvirtd = {
       enable = true;
-      wantedBy = [ "multi-user.target" ];
-      requires = [ "virtlogd.service" ];
+      wantedBy = ["multi-user.target"];
+      requires = ["virtlogd.service"];
     };
   };
 
   hardware = {
     sane = {
       enable = true;
-      extraBackends = [ pkgs.sane-airscan ];
-      disabledDefaultBackends = [ "escl" ];
+      extraBackends = [pkgs.sane-airscan];
+      disabledDefaultBackends = ["escl"];
     };
     logitech.wireless = {
       enable = true;
@@ -750,7 +769,6 @@ in
         settingsSha256 = "sha256-6n9mVkEL39wJj5FB1HBml7TTJhNAhS/j5hqpNGFQE4w=";
         usePersistenced = false;
       };
-
     };
     graphics = {
       enable = true;
@@ -805,8 +823,8 @@ in
         "nix-command"
         "flakes"
       ];
-      substituters = [ "https://hyprland.cachix.org" ];
-      trusted-public-keys = [ "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc=" ];
+      substituters = ["https://hyprland.cachix.org"];
+      trusted-public-keys = ["hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="];
     };
     gc = {
       automatic = true;
@@ -822,7 +840,7 @@ in
   programs._1password-gui = {
     enable = true;
     package = pkgs.unstable._1password-gui;
-    polkitPolicyOwners = [ "william" ];
+    polkitPolicyOwners = ["william"];
   };
 
   xdg.mime.defaultApplications = {
@@ -857,11 +875,9 @@ in
     "application/vnd.ms-excel" = "libreoffice-calc.desktop";
     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" = "libreoffice-calc.desktop";
     "application/msword" = "libreoffice-writer.desktop";
-    "application/vnd.openxmlformats-officedocument.wordprocessingml.document" =
-      "libreoffice-writer.desktop";
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document" = "libreoffice-writer.desktop";
     "application/vnd.ms-powerpoint" = "libreoffice-impress.desktop";
-    "application/vnd.openxmlformats-officedocument.presentationml.presentation" =
-      "libreoffice-impress.desktop";
+    "application/vnd.openxmlformats-officedocument.presentationml.presentation" = "libreoffice-impress.desktop";
 
     # PDF
     "application/pdf" = "zen.desktop";
@@ -878,7 +894,7 @@ in
   };
 
   home-manager = {
-    extraSpecialArgs = { inherit inputs; };
+    extraSpecialArgs = {inherit inputs;};
     users.${username} = import ./home.nix;
     useGlobalPkgs = true;
     useUserPackages = true;
