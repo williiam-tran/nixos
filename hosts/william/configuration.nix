@@ -716,6 +716,14 @@ in {
     wantedBy = ["default.target"];
   };
 
+  systemd.user.services.zalo = {
+    enable = true;
+    script = ''
+      ${pkgs.unstable.wineWowPackages.stagingFull}/bin/wine "C:\\users\\william\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Zalo.lnk"
+    '';
+    wantedBy = ["default.target"];
+  };
+
   systemd.user.services.lan-mouse = {
     script = "export PATH=$PATH:/usr/bin; /home/william/scripts/lan-mouse.sh";
     path = ["/usr/bin"];
@@ -727,7 +735,14 @@ in {
     };
   };
 
+  # start up
   systemd.services = {
+    cursor = {
+      script = ''
+        ${pkgs.appimage-run}/bin/appimage-run /home/william/Downloads/Cursor-0.50.4-x86_64.AppImage &
+      '';
+      wantedBy = ["multi-user.target"];
+    };
     cider = {
       script = ''
         ${pkgs.appimage-run}/bin/appimage-run /home/william/Downloads/cider-v2.0.3-linux-x64.AppImage &

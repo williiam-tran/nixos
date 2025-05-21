@@ -57,9 +57,9 @@ bindkey '^p' history-search-backward
 bindkey '^n' history-search-forward
 bindkey '^[w' kill-region
 bindkey '^w' backward-kill-word
-bindkey '^el' vi-forward-char
 bindkey '^[[A' history-search-backward
 bindkey '^[[B' history-search-forward
+bindkey '^[[C' forward-word
 
 # Environment variables
 export EDITOR="/usr/bin/nvim"
@@ -105,6 +105,14 @@ fzf-command-complete() {
   zle reset-prompt
 }
 zle -N fzf-command-complete
+
+unix-word-rubout() {
+    local WORDCHARS=$'!"#$%&\'()*+,.:;<=>?@[\\]^`{|}~'
+    zle backward-kill-word
+}
+
+zle -N unix-word-rubout
+bindkey '^W' unix-word-rubout
 
 # Aliases
 alias ssh="kitty +kitten ssh"

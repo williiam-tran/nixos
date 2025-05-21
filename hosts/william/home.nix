@@ -161,6 +161,10 @@ in
       Include ~/.ssh/1Password/config
       Host *
           IdentityAgent ${onePassPath}
+      Host github.com
+          User git
+          IdentityFile ~/.ssh/homenix
+          IdentitiesOnly yes
       Host germany-prod-server
           User root
           HostName 157.90.246.243
