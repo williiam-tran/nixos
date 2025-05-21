@@ -785,6 +785,7 @@ in {
   };
 
   services.blueman.enable = true;
+  environment.variables.XDG_RUNTIME_DIR = "/run/user/$UID";
 
   security = {
     pam.services.gdm-password.enableGnomeKeyring = true;
