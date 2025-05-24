@@ -5,16 +5,14 @@
   inputs,
   options,
   ...
-}:
-let
+}: let
   username = "william";
   userDescription = "William Tran";
   homeDirectory = "/home/${username}";
   hostName = "william";
   timeZone = "Asia/Ho_Chi_Minh";
   pkgs-unstable = inputs.hyprland.inputs.nixpkgs.legacyPackages.${pkgs.stdenv.hostPlatform.system};
-in
-{
+in {
   nixpkgs.overlays = [
     (final: _: {
       # this allows you to access `pkgs.unstable` anywhere in your config
@@ -37,8 +35,8 @@ in
 
   boot = {
     kernelPackages = pkgs.linuxPackages_zen;
-    kernelModules = [ "v4l2loopback" ];
-    extraModulePackages = [ config.boot.kernelPackages.v4l2loopback ];
+    kernelModules = ["v4l2loopback"];
+    extraModulePackages = [config.boot.kernelPackages.v4l2loopback];
     kernel.sysctl = {
       "vm.max_map_count" = 2147483642;
     };
@@ -80,15 +78,20 @@ in
 
   networking = {
     hostName = hostName;
+    nameservers = [
+      "1.1.1.1"
+      "1.0.0.1"
+      "8.8.8.8"
+    ];
     networkmanager = {
       enable = true;
-      # insertNameservers = [
-        # "1.1.1.1"
-        # "1.0.0.1"
-        # "8.8.8.8"
-      # ];
+      insertNameservers = [
+        "1.1.1.1"
+        "1.0.0.1"
+        "8.8.8.8"
+      ];
     };
-    timeServers = options.networking.timeServers.default ++ [ "pool.ntp.org" ];
+    timeServers = options.networking.timeServers.default ++ ["pool.ntp.org"];
     firewall = {
       enable = true;
       allowedTCPPorts = [
@@ -198,6 +201,15 @@ in
   virtualisation = {
     docker = {
       enable = true;
+      rootless = {
+        enable = true;
+        setSocketVariable = true;
+      };
+      daemon = {
+        settings = {
+          data-root = "/home/william/docker-data";
+        };
+      };
     };
     libvirtd = {
       enable = true;
@@ -265,15 +277,24 @@ in
   };
   xdg.portal.config.common.default = "*";
   environment.systemPackages = with pkgs; [
+    # Wine
+    unstable.winetricks
+
+    # native wayland support (unstable)
+    unstable.wineWowPackages.stagingFull
+    unstable.wineWowPackages.waylandFull
+
     # Zen Browser from custom input
-    inputs.zen-browser.packages."${system}".default
     inputs.hyprswitch.packages.x86_64-linux.default
-    hyprlandPlugins.hyprsplit
+    inputs.alejandra.defaultPackage.${pkgs.system}
+
+    syncthing
+    unstable.cloudflared
+    unstable.celluloid
     unstable.zsync2
     unstable.barrier
     unstable.gh
     unstable.aider-chat
-    unstable.caprine
     unstable.tofi
     unstable.obs-studio
     unstable.ventoy-full-gtk
@@ -300,11 +321,14 @@ in
     cargo
     nodePackages_latest.pnpm
     nodePackages_latest.yarn
+    prisma-engines
     fnm
     bun
     maven
     mongodb-compass
     gcc
+    ruby
+    lsof
     openssl
     nodePackages_latest.live-server
 
@@ -320,6 +344,7 @@ in
     gh
     lazygit
     lazydocker
+    docker-compose
     bruno
     postman
     gnumake
@@ -368,7 +393,7 @@ in
     # Network and internet tools
     aria2
     qbittorrent
-    # cloudflare-warp
+    cloudflare-warp
     tailscale
 
     # Audio and video
@@ -394,9 +419,12 @@ in
     libreoffice-qt6-fresh
 
     # Communication and social
+    unstable.discord
+    unstable.caprine
 
     # Browsers
     firefox
+    inputs.zen-browser.packages."${system}".default
     google-chrome
 
     # Gaming and entertainment
@@ -531,6 +559,13 @@ in
   };
 
   services = {
+    postgresql = {
+      enable = true;
+      authentication = pkgs.lib.mkOverride 10 ''
+        #type database  DBuser  auth-method
+        local all       all     trust
+      '';
+    };
     sunshine = {
       enable = true;
       autoStart = true;
@@ -567,7 +602,7 @@ in
         layout = "us";
         variant = "";
       };
-      videoDrivers = [ "nvidia" ];
+      videoDrivers = ["nvidia"];
     };
     displayManager.sddm = {
       enable = true;
@@ -581,7 +616,24 @@ in
       '';
     };
 
-    # cloudflare-warp.enable = true;
+    cloudflared = {
+      package = pkgs.unstable.cloudflared;
+      enable = true;
+      # tunnels = {
+      #   "22414bb7-b356-42bd-8355-15569c8afa5b" = {
+      #     warp-routing.enabled = true;
+      #     credentialsFile = "/home/william/.cloudflared/22414bb7-b356-42bd-8355-15569c8afa5b.json";
+      #     default = "http_status:404";
+      #     ingress = {
+      #     "devhome.igtcollege.edu.vn" = {
+      #       service = "http://localhost:3000";
+      #     };
+      #     };
+      #   };
+      # };
+    };
+
+    cloudflare-warp.enable = false;
     # supergfxd.enable = true;
     # asusd = {
     #   enable = true;
@@ -634,7 +686,7 @@ in
     };
     ipp-usb.enable = true;
     syncthing = {
-      enable = false;
+      enable = true;
       user = username;
       dataDir = homeDirectory;
       configDir = "${homeDirectory}/.config/syncthing";
@@ -656,48 +708,63 @@ in
   systemd.services.NetworkManager-wait-online.enable = false;
   systemd.user.services.onepassword = {
     script = "${pkgs.unstable._1password-gui}/bin/1password --silent %U";
-    wantedBy = [ "default.target" ];
+    wantedBy = ["default.target"];
   };
 
   systemd.user.services.xremap = {
     enable = true;
-    wantedBy = [ "default.target" ];
+    wantedBy = ["default.target"];
+  };
+
+  systemd.user.services.zalo = {
+    enable = true;
+    script = ''
+      ${pkgs.unstable.wineWowPackages.stagingFull}/bin/wine "C:\\users\\william\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Zalo.lnk"
+    '';
+    wantedBy = ["default.target"];
   };
 
   systemd.user.services.lan-mouse = {
     script = "export PATH=$PATH:/usr/bin; /home/william/scripts/lan-mouse.sh";
-    path = [ "/usr/bin" ];
+    path = ["/usr/bin"];
     environment.HOME = "/home/william";
-    wantedBy = [ "graphical.target" ];
+    wantedBy = ["graphical.target"];
     serviceConfig = {
-        Restart = "on-failure";
-        RestartSec = 5;
+      Restart = "on-failure";
+      RestartSec = 3; # Wait 5 seconds before restarting
     };
   };
 
+  # start up
   systemd.services = {
+    cursor = {
+      script = ''
+        ${pkgs.appimage-run}/bin/appimage-run /home/william/Downloads/Cursor-0.50.4-x86_64.AppImage &
+      '';
+      wantedBy = ["multi-user.target"];
+    };
     cider = {
       script = ''
         ${pkgs.appimage-run}/bin/appimage-run /home/william/Downloads/cider-v2.0.3-linux-x64.AppImage &
       '';
-      wantedBy = [ "multi-user.target" ];
+      wantedBy = ["multi-user.target"];
     };
     flatpak-repo = {
-      path = [ pkgs.flatpak ];
+      path = [pkgs.flatpak];
       script = "flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo";
     };
     libvirtd = {
       enable = true;
-      wantedBy = [ "multi-user.target" ];
-      requires = [ "virtlogd.service" ];
+      wantedBy = ["multi-user.target"];
+      requires = ["virtlogd.service"];
     };
   };
 
   hardware = {
     sane = {
       enable = true;
-      extraBackends = [ pkgs.sane-airscan ];
-      disabledDefaultBackends = [ "escl" ];
+      extraBackends = [pkgs.sane-airscan];
+      disabledDefaultBackends = ["escl"];
     };
     logitech.wireless = {
       enable = true;
@@ -708,6 +775,7 @@ in
       powerOnBoot = true;
     };
     nvidia = {
+      powerManagement.enable = true;
       open = false;
       package = config.boot.kernelPackages.nvidiaPackages.mkDriver {
         version = "575.51.02";
@@ -716,7 +784,6 @@ in
         settingsSha256 = "sha256-6n9mVkEL39wJj5FB1HBml7TTJhNAhS/j5hqpNGFQE4w=";
         usePersistenced = false;
       };
-
     };
     graphics = {
       enable = true;
@@ -733,6 +800,7 @@ in
   };
 
   services.blueman.enable = true;
+  environment.variables.XDG_RUNTIME_DIR = "/run/user/$UID";
 
   security = {
     pam.services.gdm-password.enableGnomeKeyring = true;
@@ -771,8 +839,8 @@ in
         "nix-command"
         "flakes"
       ];
-      substituters = [ "https://hyprland.cachix.org" ];
-      trusted-public-keys = [ "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc=" ];
+      substituters = ["https://hyprland.cachix.org"];
+      trusted-public-keys = ["hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="];
     };
     gc = {
       automatic = true;
@@ -788,7 +856,7 @@ in
   programs._1password-gui = {
     enable = true;
     package = pkgs.unstable._1password-gui;
-    polkitPolicyOwners = [ "william" ];
+    polkitPolicyOwners = ["william"];
   };
 
   xdg.mime.defaultApplications = {
@@ -823,11 +891,9 @@ in
     "application/vnd.ms-excel" = "libreoffice-calc.desktop";
     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" = "libreoffice-calc.desktop";
     "application/msword" = "libreoffice-writer.desktop";
-    "application/vnd.openxmlformats-officedocument.wordprocessingml.document" =
-      "libreoffice-writer.desktop";
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document" = "libreoffice-writer.desktop";
     "application/vnd.ms-powerpoint" = "libreoffice-impress.desktop";
-    "application/vnd.openxmlformats-officedocument.presentationml.presentation" =
-      "libreoffice-impress.desktop";
+    "application/vnd.openxmlformats-officedocument.presentationml.presentation" = "libreoffice-impress.desktop";
 
     # PDF
     "application/pdf" = "zen.desktop";
@@ -844,7 +910,7 @@ in
   };
 
   home-manager = {
-    extraSpecialArgs = { inherit inputs; };
+    extraSpecialArgs = {inherit inputs;};
     users.${username} = import ./home.nix;
     useGlobalPkgs = true;
     useUserPackages = true;

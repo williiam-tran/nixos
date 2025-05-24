@@ -57,9 +57,9 @@ bindkey '^p' history-search-backward
 bindkey '^n' history-search-forward
 bindkey '^[w' kill-region
 bindkey '^w' backward-kill-word
-bindkey '^el' vi-forward-char
 bindkey '^[[A' history-search-backward
 bindkey '^[[B' history-search-forward
+bindkey '^[[C' forward-word
 
 # Environment variables
 export EDITOR="/usr/bin/nvim"
@@ -106,7 +106,16 @@ fzf-command-complete() {
 }
 zle -N fzf-command-complete
 
+unix-word-rubout() {
+    local WORDCHARS=$'!"#$%&\'()*+,.:;<=>?@[\\]^`{|}~'
+    zle backward-kill-word
+}
+
+zle -N unix-word-rubout
+bindkey '^W' unix-word-rubout
+
 # Aliases
+alias ssh="kitty +kitten ssh"
 alias gu='gitupdate'
 alias ..='cd ..' ...='cd ../..' .3='cd ../../..' .4='cd ../../../..' .5='cd ../../../../..'
 alias l='eza -lh --icons=auto' ls='eza -1 --icons=auto' ll='eza -lha --icons=auto --sort=name --group-directories-first'
@@ -133,6 +142,7 @@ eval "$(fnm env --use-on-cd --shell zsh)"
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
 export PATH="/usr/bin:$PATH"
+export PATH="/home/william/.local/share/gem/ruby/3.3.0/bin:$PATH"
 export QT_STYLE_OVERRIDE=Darkly
 
 # Functions
