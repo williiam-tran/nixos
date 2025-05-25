@@ -586,10 +586,12 @@ in {
             remap = {
               Alt_L = "Super_L";
               Super_L = "Alt_L";
+              Capslock = "Escape";
             };
           }
         ];
         keymap = [
+            
         ];
       };
     };
