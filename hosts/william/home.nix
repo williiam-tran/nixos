@@ -3,14 +3,12 @@
   pkgs,
   inputs,
   ...
-}:
-let
+}: let
   userName = "william";
   homeDirectory = "/home/${userName}";
   stateVersion = "24.11";
   onePassPath = "~/.1password/agent.sock";
-in
-{
+in {
   home = {
     username = userName;
     homeDirectory = homeDirectory;
@@ -101,7 +99,7 @@ in
     ];
 
     packages = [
-      (import ../../scripts/rofi-launcher.nix { inherit pkgs; })
+      (import ../../scripts/rofi-launcher.nix {inherit pkgs;})
     ];
   };
 
@@ -155,28 +153,10 @@ in
   };
 
   programs.home-manager.enable = true;
-  programs.ssh = {
-    enable = true;
-    extraConfig = ''
-      Include ~/.ssh/1Password/config
-      Host *
-          IdentityAgent ${onePassPath}
-      Host github.com
-          User git
-          IdentityFile ~/.ssh/homenix
-          IdentitiesOnly yes
-      Host germany-prod-server
-          User root
-          HostName 157.90.246.243
-          IdentityFile ~/.ssh/Hetzner
-          IdentitiesOnly yes
-      Host dev-server
-          User root
-          HostName 188.245.165.232
-          IdentityFile ~/.ssh/Hetzner
-          IdentitiesOnly yes
-    '';
-  };
+  # programs.ssh = {
+  #   enable = true;
+  #   extraConfig = "";
+  # };
 
   xdg.portal.config.common.default = "*";
   xdg.desktopEntries = {
@@ -216,7 +196,7 @@ in
   wayland.windowManager.hyprland = {
     enable = true;
     package = null;
-    systemd.variables = [ "--all" ];
+    systemd.variables = ["--all"];
     extraConfig = ''
       source = ~/.config/hypr/custom.conf
       source = ~/.config/hypr/keybindings.conf

@@ -1,9 +1,9 @@
 {
   config,
-  lib,
   pkgs,
   inputs,
   options,
+  pkgs_zen_kernel,
   ...
 }: let
   username = "william";
@@ -36,7 +36,10 @@ in {
   boot = {
     kernelPackages = pkgs.linuxPackages_zen;
     kernelModules = ["v4l2loopback"];
-    extraModulePackages = [config.boot.kernelPackages.v4l2loopback];
+    extraModulePackages = [
+      config.boot.kernelPackages.v4l2loopback
+      # (config.boot.kernelPackages.callPackage ../../modules/custom-bluetooth-driver.nix {})
+    ];
     kernel.sysctl = {
       "vm.max_map_count" = 2147483642;
     };
@@ -283,12 +286,14 @@ in {
     # native wayland support (unstable)
     unstable.wineWowPackages.stagingFull
     unstable.wineWowPackages.waylandFull
-
+    broadcom-bt-firmware
+    rtl8761b-firmware
     # Zen Browser from custom input
     inputs.hyprswitch.packages.x86_64-linux.default
     inputs.alejandra.defaultPackage.${pkgs.system}
 
     syncthing
+    unstable.shotcut
     unstable.cloudflared
     unstable.celluloid
     unstable.zsync2
@@ -314,6 +319,7 @@ in {
     lua
     python3
     python312Packages.pip
+    virtualenv
     uv
     clang
     zig
@@ -353,9 +359,12 @@ in {
     meson
     cpio
     cmake
+    nix-prefetch-git
+    nix-prefetch-github
     ninja
 
     # Shell and terminal utilities
+    usbutils
     croc
     stow
     wget
@@ -434,6 +443,9 @@ in {
     # System utilities
     libgcc
     bc
+    bluez5-experimental
+    bluez-tools
+    bluez-alsa
     kdePackages.dolphin
     lxqt.lxqt-policykit
     libnotify
@@ -654,7 +666,10 @@ in {
     upower.enable = true;
     fstrim.enable = true;
     gvfs.enable = true;
-    openssh.enable = true;
+    openssh = {
+      enable = true;
+      extraConfig = "";
+    };
     flatpak.enable = true;
     printing = {
       enable = false;
@@ -705,15 +720,29 @@ in {
   };
 
   # powerManagement.powertop.enable = true;
+  systemd.services."bluetooth".serviceConfig = {
+    StateDirectory = ""; # <<< minimal solution, applied in override.conf
+
+    # Seems unnecessary, but useful to keep in mind if bluetooth
+    # defaults get locked down even more:
+    # ReadWritePaths="/persist/var/lib/bluetooth/";
+  };
   systemd.services.NetworkManager-wait-online.enable = false;
   systemd.user.services.onepassword = {
     script = "${pkgs.unstable._1password-gui}/bin/1password --silent %U";
-    wantedBy = ["default.target"];
+    # wantedBy = ["default.target"];
+  };
+
+  systemd.user.services = {
+    obsidian = {
+      enable = true;
+    };
+    # wantedBy = ["default.target"];
   };
 
   systemd.user.services.xremap = {
     enable = true;
-    wantedBy = ["default.target"];
+    # wantedBy = ["default.target"];
   };
 
   systemd.user.services.zalo = {
@@ -721,14 +750,14 @@ in {
     script = ''
       ${pkgs.unstable.wineWowPackages.stagingFull}/bin/wine "C:\\users\\william\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Zalo.lnk"
     '';
-    wantedBy = ["default.target"];
+    # wantedBy = ["default.target"];
   };
 
   systemd.user.services.lan-mouse = {
     script = "export PATH=$PATH:/usr/bin; /home/william/scripts/lan-mouse.sh";
     path = ["/usr/bin"];
     environment.HOME = "/home/william";
-    wantedBy = ["graphical.target"];
+    # wantedBy = ["graphical.target"];
     serviceConfig = {
       Restart = "on-failure";
       RestartSec = 3; # Wait 5 seconds before restarting
@@ -761,6 +790,8 @@ in {
   };
 
   hardware = {
+    enableAllFirmware = true;
+    enableRedistributableFirmware = true;
     sane = {
       enable = true;
       extraBackends = [pkgs.sane-airscan];
@@ -773,6 +804,18 @@ in {
     bluetooth = {
       enable = true;
       powerOnBoot = true;
+      package = pkgs.bluez5-experimental;
+      settings = {
+        General = {
+          Enable = "Source,Sink,Media,Socket";
+          FastConnectable = "true";
+          Experimental = "true";
+          ControllerMode = "dual";
+        };
+        Policy = {
+          AutoEnable = "true";
+        };
+      };
     };
     nvidia = {
       powerManagement.enable = true;
@@ -915,6 +958,16 @@ in {
     useGlobalPkgs = true;
     useUserPackages = true;
     backupFileExtension = "backup";
+  };
+
+  fileSystems."/var/lib/bluetooth" = {
+    device = "/persist/var/lib/bluetooth";
+    options = [
+      "bind"
+      "noauto"
+      "x-systemd.automount"
+    ];
+    noCheck = true;
   };
 
   system.stateVersion = "24.11";

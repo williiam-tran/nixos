@@ -134,6 +134,7 @@ alias ~="cd ~"
 alias edit="nvim ~/.zshrc"
 alias update="source ~/.zshrc"
 alias i="/usr/bin/nvim"
+alias vi="/usr/bin/nvim"
 
 # Tool integrations
 eval "$(zoxide init --cmd cd zsh)"
