@@ -722,27 +722,27 @@ in {
   # powerManagement.powertop.enable = true;
   systemd.services."bluetooth".serviceConfig = {
     StateDirectory = ""; # <<< minimal solution, applied in override.conf
-
-    # Seems unnecessary, but useful to keep in mind if bluetooth
-    # defaults get locked down even more:
-    # ReadWritePaths="/persist/var/lib/bluetooth/";
   };
+
   systemd.services.NetworkManager-wait-online.enable = false;
   systemd.user.services.onepassword = {
     script = "${pkgs.unstable._1password-gui}/bin/1password --silent %U";
-    # wantedBy = ["default.target"];
+    wantedBy = ["default.target"];
   };
 
-  systemd.user.services = {
-    obsidian = {
-      enable = true;
-    };
-    # wantedBy = ["default.target"];
+  systemd.user.services.caprine = {
+    script = "${pkgs.unstable.caprine}/bin/caprine %U";
+    wantedBy = ["default.target"];
+  };
+
+  systemd.user.services.obsidian = {
+    script = "${pkgs.obsidian}/bin/obsidian %U";
+    wantedBy = ["default.target"];
   };
 
   systemd.user.services.xremap = {
     enable = true;
-    # wantedBy = ["default.target"];
+    wantedBy = ["default.target"];
   };
 
   systemd.user.services.zalo = {
@@ -750,14 +750,14 @@ in {
     script = ''
       ${pkgs.unstable.wineWowPackages.stagingFull}/bin/wine "C:\\users\\william\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Zalo.lnk"
     '';
-    # wantedBy = ["default.target"];
+    wantedBy = ["default.target"];
   };
 
   systemd.user.services.lan-mouse = {
     script = "export PATH=$PATH:/usr/bin; /home/william/scripts/lan-mouse.sh";
     path = ["/usr/bin"];
     environment.HOME = "/home/william";
-    # wantedBy = ["graphical.target"];
+    wantedBy = ["graphical.target"];
     serviceConfig = {
       Restart = "on-failure";
       RestartSec = 3; # Wait 5 seconds before restarting
