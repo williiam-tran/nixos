@@ -228,6 +228,7 @@ in {
   programs = {
     steam = {
       enable = true;
+
       remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
       dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
     };
@@ -727,17 +728,17 @@ in {
   systemd.services.NetworkManager-wait-online.enable = false;
   systemd.user.services.onepassword = {
     script = "${pkgs.unstable._1password-gui}/bin/1password --silent %U";
-    wantedBy = ["default.target"];
+    wantedBy = ["multi-user.target"];
   };
 
   systemd.user.services.caprine = {
     script = "${pkgs.unstable.caprine}/bin/caprine %U";
-    wantedBy = ["default.target"];
+    wantedBy = ["multi-user.target"];
   };
 
   systemd.user.services.obsidian = {
     script = "${pkgs.obsidian}/bin/obsidian %U";
-    wantedBy = ["default.target"];
+    wantedBy = ["multi-user.target"];
   };
 
   systemd.user.services.xremap = {
@@ -750,7 +751,7 @@ in {
     script = ''
       ${pkgs.unstable.wineWowPackages.stagingFull}/bin/wine "C:\\users\\william\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Zalo.lnk"
     '';
-    wantedBy = ["default.target"];
+    wantedBy = ["multi-user.target"];
   };
 
   systemd.user.services.lan-mouse = {
@@ -796,6 +797,12 @@ in {
       enable = true;
       extraBackends = [pkgs.sane-airscan];
       disabledDefaultBackends = ["escl"];
+    };
+    xone = {
+      enable = true;
+    };
+    xpadneo = {
+      enable = true;
     };
     logitech.wireless = {
       enable = true;

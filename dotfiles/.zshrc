@@ -145,6 +145,7 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 export PATH="/usr/bin:$PATH"
 export PATH="/home/william/.local/share/gem/ruby/3.3.0/bin:$PATH"
 export QT_STYLE_OVERRIDE=Darkly
+export STEAMROOT=~/.local/share/Steam
 
 # Functions
 function gitupdate() {
