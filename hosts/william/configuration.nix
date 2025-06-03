@@ -228,7 +228,7 @@ in {
   programs = {
     steam = {
       enable = true;
-
+      gamescopeSession.enable = true;
       remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
       dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
     };
@@ -283,7 +283,7 @@ in {
   environment.systemPackages = with pkgs; [
     # Wine
     unstable.winetricks
-
+    vulkan-tools
     # native wayland support (unstable)
     unstable.wineWowPackages.stagingFull
     unstable.wineWowPackages.waylandFull
@@ -440,6 +440,8 @@ in {
     # Gaming and entertainment
     stremio
     steam
+    unstable.lutris
+    unstable.protobuf
 
     # System utilities
     libgcc
@@ -847,6 +849,9 @@ in {
         libva-vdpau-driver
       ];
     };
+    opengl = {
+      enable = true;
+    };
   };
 
   services.blueman.enable = true;
@@ -898,7 +903,7 @@ in {
       options = "--delete-older-than 7d";
     };
   };
-
+  programs.gamemode.enable = true;
   programs._1password = {
     enable = true;
     package = pkgs.unstable._1password-cli;
