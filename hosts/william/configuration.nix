@@ -408,6 +408,7 @@ in {
 
     # Audio and video
     pulseaudio
+    helvum
     pavucontrol
     ffmpeg
     mpv
@@ -719,7 +720,7 @@ in {
       jack.enable = true;
       wireplumber.enable = true;
     };
-    # pulseaudio.enable = false;
+    pulseaudio.enable = false;
   };
 
   # powerManagement.powertop.enable = true;
