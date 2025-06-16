@@ -113,6 +113,8 @@ in {
       allowedUDPPorts = [
         24800
         4242
+        48000
+        48010
       ];
       allowedUDPPortRanges = [
         {
@@ -469,7 +471,9 @@ in {
     unstable.pkgconf
     brightnessctl
     virt-viewer
-    sunshine
+
+    unstable.sunshine
+
     swappy
     appimage-run
     yad
@@ -731,17 +735,22 @@ in {
   systemd.services.NetworkManager-wait-online.enable = false;
   systemd.user.services.onepassword = {
     script = "${pkgs.unstable._1password-gui}/bin/1password --silent %U";
-    wantedBy = ["multi-user.target"];
+    wantedBy = ["default.target"];
   };
 
   systemd.user.services.caprine = {
     script = "${pkgs.unstable.caprine}/bin/caprine %U";
-    wantedBy = ["multi-user.target"];
+    wantedBy = ["default.target"];
   };
 
   systemd.user.services.obsidian = {
+    enable = true;
     script = "${pkgs.obsidian}/bin/obsidian %U";
-    wantedBy = ["multi-user.target"];
+    wantedBy = ["default.target"];
+    serviceConfig = {
+      Restart = "on-failure";
+      RestartSec = 3; # Wait 5 seconds before restarting
+    };
   };
 
   systemd.user.services.xremap = {
@@ -849,9 +858,6 @@ in {
         vaapi-intel-hybrid
         libva-vdpau-driver
       ];
-    };
-    opengl = {
-      enable = true;
     };
   };
 

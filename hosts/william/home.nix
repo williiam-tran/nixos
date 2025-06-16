@@ -22,14 +22,11 @@ in {
       ".config/wlogout/icons".source = ../../config/wlogout;
 
       # Top Level Files symlinks
-      ".zshrc".source = ../../dotfiles/.zshrc;
+      # ".zshrc".source = ../../dotfiles/.zshrc;
       ".gitconfig".source = ../../dotfiles/.gitconfig;
-      ".ideavimrc".source = ../../dotfiles/.ideavimrc;
-      ".nirc".source = ../../dotfiles/.nirc;
       ".local/bin/wallpaper".source = ../../dotfiles/.local/bin/wallpaper;
 
       # Config directories
-      ".config/alacritty".source = ../../dotfiles/.config/alacritty;
       ".config/dunst".source = ../../dotfiles/.config/dunst;
       ".config/fastfetch".source = ../../dotfiles/.config/fastfetch;
       ".config/kitty".source = ../../dotfiles/.config/kitty;
@@ -37,11 +34,8 @@ in {
       ".config/tmux/tmux.conf".source = ../../dotfiles/.config/tmux/tmux.conf;
       ".config/waybar".source = ../../dotfiles/.config/waybar;
       ".config/yazi".source = ../../dotfiles/.config/yazi;
-      ".config/wezterm".source = ../../dotfiles/.config/wezterm;
-      ".config/ghostty".source = ../../dotfiles/.config/ghostty;
 
       # Individual config files
-      ".config/kwalletrc".source = ../../dotfiles/.config/kwalletrc;
       ".config/starship.toml".source = ../../dotfiles/.config/starship.toml;
       ".config/autostart/cider.desktop".text = ''
         [Desktop Entry]
