@@ -22,7 +22,7 @@ in {
       ".config/wlogout/icons".source = ../../config/wlogout;
 
       # Top Level Files symlinks
-      # ".zshrc".source = ../../dotfiles/.zshrc;
+      ".zshrc".source = ../../dotfiles/.zshrc;
       ".gitconfig".source = ../../dotfiles/.gitconfig;
       ".local/bin/wallpaper".source = ../../dotfiles/.local/bin/wallpaper;
 
@@ -103,7 +103,7 @@ in {
   ];
 
   # Styling
-  stylix.targets.waybar.enable = true;
+  stylix.targets.waybar.enable = false;
   gtk = {
     iconTheme = {
       name = "Papirus-Dark";
@@ -123,6 +123,10 @@ in {
       inputs.lightly.packages.${pkgs.system}.darkly-qt6
     ];
     platformTheme.name = "qtct";
+  };
+
+  services.copyq = {
+    enable = true;
   };
 
   services.hypridle = {

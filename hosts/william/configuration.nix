@@ -98,6 +98,7 @@ in {
     firewall = {
       enable = true;
       allowedTCPPorts = [
+        3030
         8003
         9009
         9010
@@ -111,6 +112,7 @@ in {
         48010
       ];
       allowedUDPPorts = [
+        3030
         24800
         4242
         48000
@@ -348,6 +350,9 @@ in {
     uv
     mariadb
 
+    # Video editor
+    unstable.davinci-resolve
+
     # Version control and development tools
     git
     gh
@@ -360,11 +365,14 @@ in {
     coreutils
     nixfmt-rfc-style
     meson
+    pkg-config
+    cairo
     cpio
     cmake
     nix-prefetch-git
     nix-prefetch-github
     ninja
+    xdg-utils
 
     # Shell and terminal utilities
     usbutils
@@ -510,7 +518,9 @@ in {
     localsend
 
     # Clipboard managers
-    cliphist
+    # cliphist
+    # clipse
+    copyq
 
     # Fun and customization
     cmatrix
@@ -639,18 +649,17 @@ in {
     cloudflared = {
       package = pkgs.unstable.cloudflared;
       enable = true;
-      # tunnels = {
-      #   "22414bb7-b356-42bd-8355-15569c8afa5b" = {
-      #     warp-routing.enabled = true;
-      #     credentialsFile = "/home/william/.cloudflared/22414bb7-b356-42bd-8355-15569c8afa5b.json";
-      #     default = "http_status:404";
-      #     ingress = {
-      #     "devhome.igtcollege.edu.vn" = {
-      #       service = "http://localhost:3000";
-      #     };
-      #     };
-      #   };
-      # };
+      tunnels = {
+        "22414bb7-b356-42bd-8355-15569c8afa5b" = {
+          credentialsFile = "/home/william/.cloudflared/22414bb7-b356-42bd-8355-15569c8afa5b.json";
+          default = "http_status:404";
+          ingress = {
+            "presentation.williamtran.tech" = {
+              service = "http://localhost:3030";
+            };
+          };
+        };
+      };
     };
 
     cloudflare-warp.enable = false;
@@ -728,11 +737,9 @@ in {
   };
 
   # powerManagement.powertop.enable = true;
-  systemd.services."bluetooth".serviceConfig = {
-    StateDirectory = ""; # <<< minimal solution, applied in override.conf
-  };
 
   systemd.services.NetworkManager-wait-online.enable = false;
+
   systemd.user.services.onepassword = {
     script = "${pkgs.unstable._1password-gui}/bin/1password --silent %U";
     wantedBy = ["default.target"];
@@ -741,6 +748,10 @@ in {
   systemd.user.services.caprine = {
     script = "${pkgs.unstable.caprine}/bin/caprine %U";
     wantedBy = ["default.target"];
+    serviceConfig = {
+      Restart = "on-failure";
+      RestartSec = 3; # Wait 5 seconds before restarting
+    };
   };
 
   systemd.user.services.obsidian = {
@@ -857,11 +868,13 @@ in {
         intel-media-driver
         vaapi-intel-hybrid
         libva-vdpau-driver
+        intel-compute-runtime
       ];
     };
   };
 
-  services.blueman.enable = true;
+  services.blueman.enable = false;
+
   environment.variables.XDG_RUNTIME_DIR = "/run/user/$UID";
 
   security = {
@@ -910,7 +923,7 @@ in {
       options = "--delete-older-than 7d";
     };
   };
-  programs.gamemode.enable = true;
+  programs.gamemode.enable = false;
   programs._1password = {
     enable = true;
     package = pkgs.unstable._1password-cli;
@@ -979,15 +992,15 @@ in {
     backupFileExtension = "backup";
   };
 
-  fileSystems."/var/lib/bluetooth" = {
-    device = "/persist/var/lib/bluetooth";
-    options = [
-      "bind"
-      "noauto"
-      "x-systemd.automount"
-    ];
-    noCheck = true;
-  };
+  # fileSystems."/var/lib/bluetooth" = {
+  #   device = "/persist/var/lib/bluetooth";
+  #   options = [
+  #     "bind"
+  #     "noauto"
+  #     "x-systemd.automount"
+  #   ];
+  #   noCheck = true;
+  # };
 
-  system.stateVersion = "24.11";
+  system.stateVersion = "25.05";
 }

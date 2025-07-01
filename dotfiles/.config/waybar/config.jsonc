@@ -1,8 +1,9 @@
 {
+// sourced from header module //
     "layer": "top",
     "position": "top",
     "mod": "dock",
-    "height": 36,
+    "height": 40,
     "exclusive": true,
     "passthrough": false,
     "gtk-layer-shell": true,
@@ -26,7 +27,7 @@
   },
 
 
-    "temperature": {
+     "temperature": {
     // "thermal-zone": 2,
     // "hwmon-path": "/sys/class/hwmon/hwmon2/temp1_input",
     // "critical-threshold": 80,
@@ -117,6 +118,10 @@
       "󰛨"
     ]
 },
+
+
+// modules for padding //
+
     "custom/left": {
         "format": " ",
         "interval" : "once",
@@ -126,6 +131,5 @@
     "custom/right": {
         "format": " ",
         "interval" : "once",
-        "tooltip": false
-    }
+        "tooltip": false    }
 }
