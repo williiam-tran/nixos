@@ -94,7 +94,7 @@ in {
         "8.8.8.8"
       ];
     };
-    timeServers = options.networking.timeServers.default ++ ["pool.ntp.org"];
+    # timeServers = options.networking.timeServers.default ++ ["pool.ntp.org"];
     firewall = {
       enable = true;
       allowedTCPPorts = [
@@ -343,6 +343,9 @@ in {
     openssl
     nodePackages_latest.live-server
 
+    # Learn
+    unstable.anki-bin
+
     # Frappe Bench
     redis
     wkhtmltopdf
@@ -430,7 +433,7 @@ in {
     imagemagick
     gimp
     hyprpicker
-    swww
+    # swww
     hyprlock
     waypaper
     imv
@@ -494,11 +497,11 @@ in {
     hypridle
     grim
     slurp
-    waybar
+    # waybar
     hyprpanel
-    dunst
+    # dunst
     wl-clipboard
-    swaynotificationcenter
+    # swaynotificationcenter
 
     # Virtualization
     libvirt
@@ -620,6 +623,12 @@ in {
           }
         ];
         keymap = [
+          {
+            name = "global";
+            remap = {
+              Shift_R = "Tab";
+            };
+          }
         ];
       };
     };
@@ -638,6 +647,10 @@ in {
       enable = true;
       wayland.enable = true; # Enable Wayland backend
       theme = "rose-pine"; # Your custom theme name
+      autoLogin = {
+        enable = true;
+        user = "william";
+      };
     };
 
     logind = {
@@ -716,9 +729,10 @@ in {
         userServices = true;
       };
     };
+
     ipp-usb.enable = true;
     syncthing = {
-      enable = true;
+      enable = false;
       user = username;
       dataDir = homeDirectory;
       configDir = "${homeDirectory}/.config/syncthing";
@@ -873,7 +887,7 @@ in {
     };
   };
 
-  services.blueman.enable = false;
+  services.blueman.enable = true;
 
   environment.variables.XDG_RUNTIME_DIR = "/run/user/$UID";
 
